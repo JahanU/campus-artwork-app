@@ -7,15 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C56E1E3B225BF1CD0014B50C /* AshtonBuilding.gpx in Resources */ = {isa = PBXBuildFile; fileRef = C56E1E3A225BF1CD0014B50C /* AshtonBuilding.gpx */; };
 		C57CCA95225A556100CC4B8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CCA94225A556100CC4B8B /* AppDelegate.swift */; };
 		C57CCA97225A556100CC4B8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CCA96225A556100CC4B8B /* ViewController.swift */; };
 		C57CCA9A225A556100CC4B8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C57CCA98225A556100CC4B8B /* Main.storyboard */; };
 		C57CCA9D225A556100CC4B8B /* AssignmentTwo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C57CCA9B225A556100CC4B8B /* AssignmentTwo.xcdatamodeld */; };
 		C57CCA9F225A556400CC4B8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C57CCA9E225A556400CC4B8B /* Assets.xcassets */; };
 		C57CCAA2225A556400CC4B8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C57CCAA0225A556400CC4B8B /* LaunchScreen.storyboard */; };
+		C57CCAAA225A584900CC4B8B /* JsonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CCAA9225A584900CC4B8B /* JsonStruct.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C56E1E3A225BF1CD0014B50C /* AshtonBuilding.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AshtonBuilding.gpx; sourceTree = "<group>"; };
 		C57CCA91225A556100CC4B8B /* AssignmentTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AssignmentTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57CCA94225A556100CC4B8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C57CCA96225A556100CC4B8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +27,7 @@
 		C57CCA9E225A556400CC4B8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C57CCAA1225A556400CC4B8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C57CCAA3225A556400CC4B8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C57CCAA9225A584900CC4B8B /* JsonStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonStruct.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +44,7 @@
 		C57CCA88225A556100CC4B8B = {
 			isa = PBXGroup;
 			children = (
+				C56E1E3A225BF1CD0014B50C /* AshtonBuilding.gpx */,
 				C57CCA93225A556100CC4B8B /* AssignmentTwo */,
 				C57CCA92225A556100CC4B8B /* Products */,
 			);
@@ -58,6 +63,7 @@
 			children = (
 				C57CCA94225A556100CC4B8B /* AppDelegate.swift */,
 				C57CCA96225A556100CC4B8B /* ViewController.swift */,
+				C57CCAA9225A584900CC4B8B /* JsonStruct.swift */,
 				C57CCA98225A556100CC4B8B /* Main.storyboard */,
 				C57CCA9E225A556400CC4B8B /* Assets.xcassets */,
 				C57CCAA0225A556400CC4B8B /* LaunchScreen.storyboard */,
@@ -127,6 +133,7 @@
 			files = (
 				C57CCAA2225A556400CC4B8B /* LaunchScreen.storyboard in Resources */,
 				C57CCA9F225A556400CC4B8B /* Assets.xcassets in Resources */,
+				C56E1E3B225BF1CD0014B50C /* AshtonBuilding.gpx in Resources */,
 				C57CCA9A225A556100CC4B8B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +147,7 @@
 			files = (
 				C57CCA97225A556100CC4B8B /* ViewController.swift in Sources */,
 				C57CCA95225A556100CC4B8B /* AppDelegate.swift in Sources */,
+				C57CCAAA225A584900CC4B8B /* JsonStruct.swift in Sources */,
 				C57CCA9D225A556100CC4B8B /* AssignmentTwo.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
