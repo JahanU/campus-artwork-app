@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OTt-Ik-xnb">
-                                <rect key="frame" x="0.0" y="342" width="375" height="325"/>
+                                <rect key="frame" x="0.0" y="361" width="375" height="306"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="jsonCells" textLabel="9Hy-TF-fSi" detailTextLabel="JwR-wh-8Wa" style="IBUITableViewCellStyleSubtitle" id="iE3-bQ-N2U">
@@ -56,7 +56,7 @@
                                 </connections>
                             </tableView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybrid" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lxP-gc-KGz">
-                                <rect key="frame" x="0.0" y="64" width="375" height="270"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="241"/>
                             </mapView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="unx-eo-poj">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -65,23 +65,36 @@
                                     <navigationItem title="University Of Liverpool Artworks" id="H49-pN-733"/>
                                 </items>
                             </navigationBar>
+                            <searchBar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hVj-QG-87D">
+                                <rect key="frame" x="0.0" y="305" width="375" height="56"/>
+                                <color key="barTintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="hJQ-gd-SGN"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="lxP-gc-KGz" secondAttribute="bottom" constant="333" id="FUe-uN-L6x"/>
+                            <constraint firstItem="OTt-Ik-xnb" firstAttribute="top" secondItem="hVj-QG-87D" secondAttribute="bottom" id="2u4-G6-4TP"/>
+                            <constraint firstItem="hVj-QG-87D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="D7Y-yt-Dy2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="lxP-gc-KGz" secondAttribute="bottom" constant="362" id="FUe-uN-L6x"/>
                             <constraint firstItem="lxP-gc-KGz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="K7v-cs-X8L"/>
                             <constraint firstItem="OTt-Ik-xnb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="PJ9-WN-O1y"/>
                             <constraint firstItem="OTt-Ik-xnb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aEN-Xi-k3B"/>
                             <constraint firstItem="lxP-gc-KGz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fmJ-u0-0Dn"/>
-                            <constraint firstItem="OTt-Ik-xnb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="278" id="pdt-do-Ahp"/>
+                            <constraint firstItem="hVj-QG-87D" firstAttribute="top" secondItem="lxP-gc-KGz" secondAttribute="bottom" id="oQT-UQ-lce"/>
+                            <constraint firstItem="OTt-Ik-xnb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="297" id="pdt-do-Ahp"/>
                             <constraint firstItem="OTt-Ik-xnb" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="qPT-6N-SVQ"/>
                             <constraint firstItem="OTt-Ik-xnb" firstAttribute="leading" secondItem="lxP-gc-KGz" secondAttribute="leading" id="rBk-gV-N4r"/>
+                            <constraint firstItem="hVj-QG-87D" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="yC7-B2-on4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="University Of Liverpool Map" id="9a8-Ba-ZPO"/>
                     <connections>
                         <outlet property="map" destination="lxP-gc-KGz" id="B3d-Vw-veK"/>
+                        <outlet property="searchBar" destination="hVj-QG-87D" id="ybu-jz-WhE"/>
                         <outlet property="table" destination="OTt-Ik-xnb" id="ipk-lY-5Ab"/>
                     </connections>
                 </viewController>
@@ -97,27 +110,81 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oCT-Zl-dcL">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCT-Zl-dcL">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Title" id="4ax-Yx-162"/>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-Hd-9ee">
+                                <rect key="frame" x="0.0" y="64" width="375" height="31.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcr-bG-mRx">
+                                <rect key="frame" x="0.0" y="120" width="375" height="258"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year of work" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6dD-Js-WvD">
+                                <rect key="frame" x="16" y="431" width="199" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Information" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cu2-9h-iL4">
+                                <rect key="frame" x="16" y="468" width="343" height="179"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COT-qi-Fi4">
+                                <rect key="frame" x="16" y="403" width="156" height="19.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="leading" secondItem="dmq-Hd-9ee" secondAttribute="leading" id="B8J-bV-1Jg"/>
+                            <constraint firstItem="9uP-n6-UMC" firstAttribute="trailing" secondItem="COT-qi-Fi4" secondAttribute="trailing" constant="203" id="HUS-0e-kBm"/>
+                            <constraint firstItem="tcr-bG-mRx" firstAttribute="top" secondItem="dmq-Hd-9ee" secondAttribute="bottom" constant="24.5" id="HXj-5C-Z3l"/>
+                            <constraint firstItem="Cu2-9h-iL4" firstAttribute="top" secondItem="6dD-Js-WvD" secondAttribute="bottom" constant="17.5" id="Jfy-1m-iSR"/>
+                            <constraint firstItem="9uP-n6-UMC" firstAttribute="trailing" secondItem="Cu2-9h-iL4" secondAttribute="trailing" constant="16" id="Jir-lb-x0g"/>
+                            <constraint firstItem="dmq-Hd-9ee" firstAttribute="trailing" secondItem="9uP-n6-UMC" secondAttribute="trailing" id="Oc3-Uy-4Vi"/>
+                            <constraint firstItem="tcr-bG-mRx" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" id="Pri-1N-M1a"/>
+                            <constraint firstItem="6dD-Js-WvD" firstAttribute="top" secondItem="COT-qi-Fi4" secondAttribute="bottom" constant="8.5" id="SPE-G8-9TY"/>
+                            <constraint firstItem="9uP-n6-UMC" firstAttribute="trailing" secondItem="6dD-Js-WvD" secondAttribute="trailing" constant="160" id="Tt2-oS-eZ8"/>
+                            <constraint firstItem="tcr-bG-mRx" firstAttribute="trailing" secondItem="9uP-n6-UMC" secondAttribute="trailing" id="VNI-KS-znh"/>
+                            <constraint firstItem="9uP-n6-UMC" firstAttribute="bottom" secondItem="tcr-bG-mRx" secondAttribute="bottom" constant="289" id="Y8P-Hx-eev"/>
+                            <constraint firstItem="COT-qi-Fi4" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="Zus-5g-Gpl"/>
+                            <constraint firstItem="dmq-Hd-9ee" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" id="aWp-5A-6OX"/>
+                            <constraint firstItem="Cu2-9h-iL4" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="dep-IR-Xfk"/>
+                            <constraint firstItem="6dD-Js-WvD" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="gYU-Bd-19A"/>
+                            <constraint firstItem="dmq-Hd-9ee" firstAttribute="top" secondItem="oCT-Zl-dcL" secondAttribute="bottom" id="gnL-m8-C9V"/>
+                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="bottom" secondItem="9uP-n6-UMC" secondAttribute="top" id="jUv-X5-btr"/>
+                            <constraint firstItem="tcr-bG-mRx" firstAttribute="centerX" secondItem="5gx-Wr-uwW" secondAttribute="centerX" id="mkK-jJ-eBu"/>
+                            <constraint firstItem="9uP-n6-UMC" firstAttribute="bottom" secondItem="Cu2-9h-iL4" secondAttribute="bottom" constant="20" id="nrC-q3-FKp"/>
+                            <constraint firstItem="COT-qi-Fi4" firstAttribute="top" secondItem="tcr-bG-mRx" secondAttribute="bottom" constant="25" id="tc6-ai-b32"/>
+                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="trailing" secondItem="dmq-Hd-9ee" secondAttribute="trailing" id="znn-ZW-Ram"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="9uP-n6-UMC"/>
                     </view>
-                    <navigationItem key="navigationItem" id="BvU-Ao-shw"/>
+                    <navigationItem key="navigationItem" title="Back" id="BvU-Ao-shw"/>
+                    <connections>
+                        <outlet property="lblArtist" destination="dmq-Hd-9ee" id="bqz-TG-ljR"/>
+                        <outlet property="lblInformation" destination="Cu2-9h-iL4" id="6AY-aY-8GO"/>
+                        <outlet property="lblTitle" destination="COT-qi-Fi4" id="Hmj-yy-QxR"/>
+                        <outlet property="lblYearWork" destination="6dD-Js-WvD" id="8Ot-Oq-e5j"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j74-Bp-buI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1836" y="124"/>
+            <point key="canvasLocation" x="1836" y="123.68815592203899"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qFF-Xi-fSL">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="i5K-qM-HKc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="WYq-4m-her" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="85r-Sj-dpE">
@@ -129,6 +196,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="zYO-wt-9kc"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i5K-qM-HKc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="271" y="134"/>
         </scene>

@@ -15,8 +15,8 @@ struct Artwork: Decodable {
     let artist: String?
     let yearOfWork: String?
     let Information: String?
-    let lat: String
-    let long: String
+    var lat: String
+    var long: String
     var location: String?
     let locationNotes: String?
     let fileName: String?
