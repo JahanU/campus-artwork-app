@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="1076" y="133.5832083958021"/>
         </scene>
-        <!--#-->
+        <!--DetailedView-->
         <scene sceneID="3do-Ly-sdx">
             <objects>
-                <viewController title="#" id="Vps-nu-9d8" customClass="DetailViewController" customModule="AssignmentTwo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="DetailedView" id="Vps-nu-9d8" customClass="DetailViewController" customModule="AssignmentTwo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5gx-Wr-uwW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -170,12 +170,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9uP-n6-UMC"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Back" id="BvU-Ao-shw"/>
+                    <navigationItem key="navigationItem" title="Artwork" id="BvU-Ao-shw"/>
                     <connections>
-                        <outlet property="lblArtist" destination="dmq-Hd-9ee" id="bqz-TG-ljR"/>
-                        <outlet property="lblInformation" destination="Cu2-9h-iL4" id="6AY-aY-8GO"/>
-                        <outlet property="lblTitle" destination="COT-qi-Fi4" id="Hmj-yy-QxR"/>
-                        <outlet property="lblYearWork" destination="6dD-Js-WvD" id="8Ot-Oq-e5j"/>
+                        <outlet property="imageView" destination="tcr-bG-mRx" id="cdS-c9-7oH"/>
+                        <outlet property="lblAuthor" destination="dmq-Hd-9ee" id="prS-W6-pFu"/>
+                        <outlet property="lblInfo" destination="Cu2-9h-iL4" id="LFD-lb-IOO"/>
+                        <outlet property="lblTitle" destination="COT-qi-Fi4" id="I5H-3q-LRt"/>
+                        <outlet property="lblYearOfWork" destination="6dD-Js-WvD" id="zOR-r7-Kzv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j74-Bp-buI" userLabel="First Responder" sceneMemberID="firstResponder"/>

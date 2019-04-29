@@ -10,20 +10,18 @@ import UIKit
 import MapKit
 import CoreLocation
 
+let cache = NSCache<NSString, NSURL>()
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var reports: [String: [Artwork]]!
     var allArtworks = [Artwork]()
-    
+    var fileNames = [String]()
     var artworkLocationNotes = [String]()
-    
     var searchArtworkSection = [String]()
-    
     var artworkSection = [String]()
-    
     var searchArtworkTitle = [String]()
     var artworkTitles = [String]()
-    
     var artworkArtist = [String]()
     
     var searching = false
@@ -57,7 +55,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     
                     if (searchArtworkSection[x] == allArtworks[y].locationNotes) {
                         print("found match sections: \(searchArtworkSection.count)")
-                        sec = searchArtworkSection[section]
+                        sec = searchArtworkSection[x]
                         if (sec!.isEmpty) {
                             return "Searching"
                         }
@@ -92,6 +90,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             print("seaching")
             for x in 0..<searchArtworkTitle.count {
                 var artwork = allArtworks[0]
+                
                 if (searchArtworkTitle.count > 1) {// If this shortens as the word has been shortened, then we reinit the searchArtworkSection array
                     xxx = searchArtworkTitle.count
                     print("Count is set to \(xxx)")
@@ -112,13 +111,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         if !(searchArtworkSection.contains(allArtworks[y].locationNotes!)) { // If we already have the section then dont append
                             searchArtworkSection.append(allArtworks[y].locationNotes!)
                         }
-//                        if (searchArtworkSection.count != xxx) {
-//                            print("!!!!!")
-//                            searchArtworkSection.removeAll()
-//                            if (searchArtworkTitle[x] == artwork.title!) { // Searching title matches a title from the array
-//                                searchArtworkSection.append(allArtworks[y].locationNotes!)
-//                            }
-//                        }
+                        if (searchArtworkSection.count != xxx) {
+                            print("!!!!!")
+                            searchArtworkSection.removeAll()
+                            if (searchArtworkTitle[x] == artwork.title!) { // Searching title matches a title from the array
+                                searchArtworkSection.append(allArtworks[y].locationNotes!)
+                            }
+                        }
                     }
                 }
             }
@@ -174,11 +173,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     for i in 0..<self.allArtworks.count {
                         self.artworkTitles.append(self.allArtworks[i].title!)
                         self.artworkSection.append(self.allArtworks[i].locationNotes!)
+                        self.fileNames.append(self.allArtworks[i].fileName!)
                     }
-                    
                     DispatchQueue.main.async(execute: {
                         self.table.reloadData()
                     })
+                    //                    self.cacheAllImages()
                 }
                 catch let jsonErr {
                     print("Error decoding JSON", jsonErr)
@@ -188,6 +188,39 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
         }
     }
+    
+    
+    
+    func download(fileName: String) {
+        
+        let baseUrl = "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artwork_images/"
+        
+        var url = URL(string: baseUrl)!
+        url.appendPathComponent(fileName)
+        
+        var request = URLRequest(url: url)
+        request.cachePolicy = .returnCacheDataElseLoad
+        
+        let session = URLSession.shared
+        let task = session.downloadTask(with: request) { file, response, error in
+            print("\(Date()) \(fileName)")
+            
+            cache.setObject(file! as NSURL, forKey: fileName as NSString)
+        }
+        task.resume()
+    }
+    
+    func cacheAllImages() {
+        let queue = OperationQueue.main
+        queue.maxConcurrentOperationCount = 3
+        
+        for i in 0..<self.fileNames.count {
+            queue.addOperation {
+                self.download(fileName: self.fileNames[i])
+            }
+        }
+    }
+    
     
     // Passes the selected section and row to the second screen
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -203,9 +236,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 extension ViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchArtworkTitle = artworkTitles.filter({$0.lowercased().prefix(searchText.count) == searchText.lowercased()})
-        
         // The user is writting the name of the artwork, with this I need to find the locationNote of that artwork and make that the section title
-        
         searching = true
         table.reloadData()
     }
