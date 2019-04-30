@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C5061C012276F34800CFB93F /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5061C002276F34800CFB93F /* PersistenceService.swift */; };
+		C5061C042276F44B00CFB93F /* ArtworkCore+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5061C022276F44B00CFB93F /* ArtworkCore+CoreDataClass.swift */; };
+		C5061C052276F44B00CFB93F /* ArtworkCore+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5061C032276F44B00CFB93F /* ArtworkCore+CoreDataProperties.swift */; };
 		C56E1E3B225BF1CD0014B50C /* AshtonBuilding.gpx in Resources */ = {isa = PBXBuildFile; fileRef = C56E1E3A225BF1CD0014B50C /* AshtonBuilding.gpx */; };
 		C57CCA95225A556100CC4B8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CCA94225A556100CC4B8B /* AppDelegate.swift */; };
 		C57CCA97225A556100CC4B8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CCA96225A556100CC4B8B /* ViewController.swift */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C5061C002276F34800CFB93F /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		C5061C022276F44B00CFB93F /* ArtworkCore+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArtworkCore+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C5061C032276F44B00CFB93F /* ArtworkCore+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArtworkCore+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C56E1E3A225BF1CD0014B50C /* AshtonBuilding.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AshtonBuilding.gpx; sourceTree = "<group>"; };
 		C57CCA91225A556100CC4B8B /* AssignmentTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AssignmentTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57CCA94225A556100CC4B8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +69,10 @@
 		C57CCA93225A556100CC4B8B /* AssignmentTwo */ = {
 			isa = PBXGroup;
 			children = (
+				C5061C022276F44B00CFB93F /* ArtworkCore+CoreDataClass.swift */,
+				C5061C032276F44B00CFB93F /* ArtworkCore+CoreDataProperties.swift */,
 				C57CCA94225A556100CC4B8B /* AppDelegate.swift */,
+				C5061C002276F34800CFB93F /* PersistenceService.swift */,
 				C5E860112261208500E9C804 /* DetailViewController.swift */,
 				C57CCA96225A556100CC4B8B /* ViewController.swift */,
 				C57CCAA9225A584900CC4B8B /* JsonStruct.swift */,
@@ -149,8 +158,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C57CCA97225A556100CC4B8B /* ViewController.swift in Sources */,
+				C5061C012276F34800CFB93F /* PersistenceService.swift in Sources */,
 				C57CCA95225A556100CC4B8B /* AppDelegate.swift in Sources */,
+				C5061C042276F44B00CFB93F /* ArtworkCore+CoreDataClass.swift in Sources */,
 				C5E860122261208500E9C804 /* DetailViewController.swift in Sources */,
+				C5061C052276F44B00CFB93F /* ArtworkCore+CoreDataProperties.swift in Sources */,
 				C57CCAAA225A584900CC4B8B /* JsonStruct.swift in Sources */,
 				C57CCA9D225A556100CC4B8B /* AssignmentTwo.xcdatamodeld in Sources */,
 			);
