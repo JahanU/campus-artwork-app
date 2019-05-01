@@ -12,6 +12,8 @@ import CoreLocation
 import CoreData
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
+
+    // MARK: - Property
     
     var artworksCoreData = [ArtworkCore]()
     var artworksCoreDataDict: [String:[ArtworkCore]]!
@@ -33,6 +35,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var table: UITableView!
+
+    let cache = NSCache<NSString, NSData>()
+
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -196,7 +202,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     DispatchQueue.main.async(execute: {
                         self.table.reloadData()
                     })
-                    //                    self.cacheAllImages()
+
+                    self.cacheAllImages()
                 }
                 catch let jsonErr {
                     print("Error decoding JSON", jsonErr)
@@ -206,13 +213,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
         }
     }
-    
-    
-    
+
     func download(fileName: String) {
-        
-        let cache = NSCache<NSString, NSURL>()
-        
+        let session = URLSession.shared
+
         let baseUrl = "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artwork_images/"
         
         var url = URL(string: baseUrl)!
@@ -220,13 +224,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
-        
-        let session = URLSession.shared
-        let task = session.downloadTask(with: request) { file, response, error in
+
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
             print("\(Date()) \(fileName)")
-            
-            cache.setObject(file! as NSURL, forKey: fileName as NSString)
+
+            self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
         }
+
         task.resume()
     }
     
@@ -247,7 +251,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if let secondClass = segue.destination as? DetailViewController {
             let arrayIndexRow = table.indexPathForSelectedRow?.row
             let arrayIndexSection = table.indexPathForSelectedRow?.section
+
             secondClass.desArtworkDetail = reports[artworkLocationNotes[arrayIndexSection!]]![arrayIndexRow!]
+            secondClass.cache = cache
+
             table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
         }
     }
