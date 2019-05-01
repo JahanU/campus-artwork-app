@@ -14,6 +14,8 @@ import CoreData
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var artworksCoreData = [ArtworkCore]()
+    var artworksCoreDataDict: [String:[ArtworkCore]]!
+    
     var reports: [String: [Artwork]]!
     var allArtworks = [Artwork]()
     var fileNames = [String]()
@@ -36,18 +38,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         decodeJson()
         
-//        PersistenceService.clearCoreData()
-        print("1 \(artworksCoreData.count)")
+        //        PersistenceService.clearCoreData()
         let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
         do {
             let artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
             self.artworksCoreData = artworksCoreData
+            self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
         }
         catch {
             print("error")
         }
-        print("2 \(artworksCoreData.count)")
-
+        
         table.reloadData()
         locationManager.delegate = self as CLLocationManagerDelegate
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -101,27 +102,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if (searching) {
             for x in 0..<searchArtworkTitle.count {
-                var artwork = allArtworks[0]
+                var artwork = artworksCoreData[0]
                 
                 if (searchArtworkTitle.count > 1) {// If this shortens as the word has been shortened, then we reinit the searchArtworkSection array
                     titleCount = searchArtworkTitle.count
                 }
                 
-                for y in 0..<allArtworks.count {
-                    artwork = allArtworks[y]
+                for y in 0..<artworksCoreData.count {
+                    artwork = artworksCoreData[y]
                     
                     if (searchArtworkTitle[x] == artwork.title!) { // Searching title matches a title from the array
                         
                         cell.textLabel?.text = artwork.title
                         cell.detailTextLabel?.text = artwork.artist
                         
-                        if !(searchArtworkSection.contains(allArtworks[y].locationNotes!)) { // If we already have the section then dont append
-                            searchArtworkSection.append(allArtworks[y].locationNotes!)
+                        if !(searchArtworkSection.contains(artworksCoreData[y].locationNotes!)) { // If we already have the section then dont append
+                            searchArtworkSection.append(artworksCoreData[y].locationNotes!)
                         }
                         if (searchArtworkSection.count != titleCount) {
                             searchArtworkSection.removeAll()
                             if (searchArtworkTitle[x] == artwork.title!) { // Searching title matches a title from the array
-                                searchArtworkSection.append(allArtworks[y].locationNotes!)
+                                searchArtworkSection.append(artworksCoreData[y].locationNotes!)
                             }
                         }
                     }
@@ -131,12 +132,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         else {
             searchArtworkSection.removeAll()
             
-            let artwork = reports[artworkLocationNotes[indexPath.section]]![indexPath.row]
+            let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row]
             cell.textLabel?.text = artwork.title
             cell.detailTextLabel?.text = artwork.artist
             
             let annotation = MKPointAnnotation()
-            let coordinate = CLLocationCoordinate2D(latitude: Double(artwork.lat)!, longitude: Double(artwork.long)!) // Pinpoint the coordinates
+            let coordinate = CLLocationCoordinate2D(latitude: artwork.lat, longitude: artwork.long) // Pinpoint the coordinates
             annotation.coordinate = coordinate
             annotation.title = artwork.title // Add & set title
             self.map.addAnnotation(annotation)
@@ -180,14 +181,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         artworkCore.information = self.allArtworks[i].Information
                         artworkCore.yearOfWork = self.allArtworks[i].yearOfWork
                         artworkCore.locationNotes = self.allArtworks[i].locationNotes
+                        artworkCore.lat = Double(self.allArtworks[i].lat)!
+                        artworkCore.long = Double(self.allArtworks[i].long)!
                         self.artworksCoreData.append(artworkCore)
                         
-//                        self.artworkTitles.append(self.allArtworks[i].title!)
+                        // self.artworkTitles.append(self.allArtworks[i].title!)
                         self.artworkSection.append(self.allArtworks[i].locationNotes!)
                         self.fileNames.append(self.allArtworks[i].fileName!)
                     }
+//                    self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
+                    
                     PersistenceService.saveContext()
-
+                    
                     DispatchQueue.main.async(execute: {
                         self.table.reloadData()
                     })
@@ -207,7 +212,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func download(fileName: String) {
         
         let cache = NSCache<NSString, NSURL>()
-
+        
         let baseUrl = "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artwork_images/"
         
         var url = URL(string: baseUrl)!

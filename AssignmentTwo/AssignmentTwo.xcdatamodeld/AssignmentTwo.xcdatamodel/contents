@@ -3,11 +3,13 @@
     <entity name="ArtworkCore" representedClassName="ArtworkCore" syncable="YES">
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="information" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="locationNotes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="long" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="yearOfWork" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ArtworkCore" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="ArtworkCore" positionX="-63" positionY="-18" width="128" height="150"/>
     </elements>
 </model>
