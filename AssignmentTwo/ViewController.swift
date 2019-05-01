@@ -11,8 +11,6 @@ import MapKit
 import CoreLocation
 import CoreData
 
-let cache = NSCache<NSString, NSURL>()
-
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var artworksCoreData = [ArtworkCore]()
@@ -38,6 +36,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         decodeJson()
         
+//        PersistenceService.clearCoreData()
+        print("1 \(artworksCoreData.count)")
         let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
         do {
             let artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
@@ -46,6 +46,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         catch {
             print("error")
         }
+        print("2 \(artworksCoreData.count)")
+
         table.reloadData()
         locationManager.delegate = self as CLLocationManagerDelegate
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -171,25 +173,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
                     self.artworkLocationNotes = self.reports.keys.sorted(by: < )
                     
-                    let artworkCore = ArtworkCore(context: PersistenceService.context)
-                    
                     for i in 0..<self.allArtworks.count {
+                        let artworkCore = ArtworkCore(context: PersistenceService.context)
                         artworkCore.title = self.allArtworks[i].title
                         artworkCore.artist = self.allArtworks[i].artist
                         artworkCore.information = self.allArtworks[i].Information
                         artworkCore.yearOfWork = self.allArtworks[i].yearOfWork
                         artworkCore.locationNotes = self.allArtworks[i].locationNotes
-
-                        PersistenceService.saveContext()
                         self.artworksCoreData.append(artworkCore)
                         
 //                        self.artworkTitles.append(self.allArtworks[i].title!)
                         self.artworkSection.append(self.allArtworks[i].locationNotes!)
                         self.fileNames.append(self.allArtworks[i].fileName!)
                     }
-                    
-                    print(self.artworksCoreData.count)
-                    
+                    PersistenceService.saveContext()
+
                     DispatchQueue.main.async(execute: {
                         self.table.reloadData()
                     })
@@ -208,6 +206,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func download(fileName: String) {
         
+        let cache = NSCache<NSString, NSURL>()
+
         let baseUrl = "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artwork_images/"
         
         var url = URL(string: baseUrl)!
@@ -260,6 +260,7 @@ extension ViewController: UISearchBarDelegate {
         searchBar.text = ""
         table.reloadData()
     }
+    
     //    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
     //        if searchBar.text?.isEmpty ?? searching == true {
     //            searching = false

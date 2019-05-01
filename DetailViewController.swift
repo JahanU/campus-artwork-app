@@ -24,9 +24,9 @@ class DetailViewController: UIViewController {
         lblTitle.text = desArtworkDetail?.title ?? "No Title"
         lblYearOfWork.text = desArtworkDetail?.yearOfWork ?? "No Year of work"
         lblInfo.text = desArtworkDetail?.Information ?? "No Information"
-        
-        let x = cache.object(forKey: desArtworkDetail?.fileName as! NSString)
-        print(x)
+//
+//        let x = cache.object(forKey: desArtworkDetail?.fileName as! NSString)
+//        print(x)
 //        imageView.image = x as! UIImage
 
     }
