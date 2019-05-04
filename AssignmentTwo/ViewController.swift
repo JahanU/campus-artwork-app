@@ -12,7 +12,7 @@ import CoreLocation
 import CoreData
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
-
+    
     // MARK: - Property
     
     var artworksCoreData = [ArtworkCore]()
@@ -35,21 +35,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var table: UITableView!
-
+    
     let cache = NSCache<NSString, NSData>()
-
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         decodeJson()
         
-        //        PersistenceService.clearCoreData()
+//        PersistenceService.clearCoreData()
         let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
         do {
             let artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
-            self.artworksCoreData = artworksCoreData
+            
+            let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
+            let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
+            let current = 50.00
+            
+            self.artworksCoreData = artworksCoreData.sorted(by: {
+                (Double($0.lat) + Double($0.long)).distance(to: current) < (Double($1.lat) + Double($1.long)).distance(to: current)
+            })
+            
             self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
+            print(self.artworksCoreData)
         }
         catch {
             print("error")
@@ -74,7 +83,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 for y in 0..<allArtworks.count {
                     
                     if (searchArtworkSection[x] == allArtworks[y].locationNotes) {
-                        print("found match sections: \(searchArtworkSection.count)")
+                        //                        print("found match sections: \(searchArtworkSection.count)")
                         sec = searchArtworkSection[x]
                         if (sec!.isEmpty) {
                             return "Searching"
@@ -86,10 +95,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
-        else {
-            searchArtworkSection.removeAll()
+        if (searching == false && searchArtworkSection.count == 0) {
             return artworkLocationNotes[section]
         }
+        
         return "false"
     }
     
@@ -136,9 +145,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
         else {
-            searchArtworkSection.removeAll()
             
             let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row]
+            
             cell.textLabel?.text = artwork.title
             cell.detailTextLabel?.text = artwork.artist
             
@@ -173,36 +182,49 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 guard let jsonData = data else { return }
                 
+                let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
+                let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
+                  let current = currentLat + currentLong
+                
                 do {
                     let decoder = JSONDecoder()
                     let getArtworks = try decoder.decode(AllArtworks.self, from: jsonData)
                     self.allArtworks = getArtworks.campus_artworks
+                    
+//                    self.allArtworks = self.allArtworks.sorted(by: {
+//                        (Double($0.lat)! + Double($0.long)!).distance(to: current) < (Double($1.lat)! + Double($1.long)!).distance(to: current)
+//                    })
                     self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
-                    self.artworkLocationNotes = self.reports.keys.sorted(by: < )
+                    
+                    for (key, _) in self.reports {
+                        self.artworkLocationNotes.append(key)
+                    }
                     
                     for i in 0..<self.allArtworks.count {
                         let artworkCore = ArtworkCore(context: PersistenceService.context)
+                        
                         artworkCore.title = self.allArtworks[i].title
+                        
                         artworkCore.artist = self.allArtworks[i].artist
                         artworkCore.information = self.allArtworks[i].Information
                         artworkCore.yearOfWork = self.allArtworks[i].yearOfWork
                         artworkCore.locationNotes = self.allArtworks[i].locationNotes
+                        
                         artworkCore.lat = Double(self.allArtworks[i].lat)!
                         artworkCore.long = Double(self.allArtworks[i].long)!
                         self.artworksCoreData.append(artworkCore)
                         
-                        // self.artworkTitles.append(self.allArtworks[i].title!)
+                        self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
                         self.artworkSection.append(self.allArtworks[i].locationNotes!)
                         self.fileNames.append(self.allArtworks[i].fileName!)
                     }
-//                    self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
                     
                     PersistenceService.saveContext()
                     
                     DispatchQueue.main.async(execute: {
                         self.table.reloadData()
                     })
-
+                    
                     self.cacheAllImages()
                 }
                 catch let jsonErr {
@@ -213,10 +235,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
         }
     }
-
+    
     func download(fileName: String) {
         let session = URLSession.shared
-
+        
         let baseUrl = "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artwork_images/"
         
         var url = URL(string: baseUrl)!
@@ -224,13 +246,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
-
+        
         let task = session.dataTask(with: request) { [weak self] data, response, error in
-            print("\(Date()) \(fileName)")
-
+            //            print("\(Date()) \(fileName)")
+            
             self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
         }
-
+        
         task.resume()
     }
     
@@ -251,10 +273,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if let secondClass = segue.destination as? DetailViewController {
             let arrayIndexRow = table.indexPathForSelectedRow?.row
             let arrayIndexSection = table.indexPathForSelectedRow?.section
-
+            
             secondClass.desArtworkDetail = reports[artworkLocationNotes[arrayIndexSection!]]![arrayIndexRow!]
             secondClass.cache = cache
-
+            
             table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
         }
     }
@@ -262,10 +284,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
 extension ViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchArtworkTitle = artworkTitles.filter({$0.lowercased().prefix(searchText.count) == searchText.lowercased()})
-        // The user is writting the name of the artwork, with this I need to find the locationNote of that artwork and make that the section title
-        searching = true
-        table.reloadData()
+        
+        if (searchBar.text?.isEmpty == true) {
+            searching = false
+            searchArtworkTitle.removeAll()
+            searchArtworkSection.removeAll()
+            table.reloadData()
+        }
+        else {// The user is writting the name of the artwork, with this I need to find the locationNote of that artwork and make that the section title
+            searchArtworkTitle = artworkTitles.filter({$0.lowercased().prefix(searchText.count) == searchText.lowercased()})
+            searching = true
+            table.reloadData()
+        }
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searching = false
@@ -273,67 +303,20 @@ extension ViewController: UISearchBarDelegate {
         table.reloadData()
     }
     
-    //    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    //        if searchBar.text?.isEmpty ?? searching == true {
-    //            searching = false
-    //            searchArtworkTitle = [""]
-    //            print(searchArtworkTitle.count)
-    //            searchBar.text = ""
-    //            table.reloadData()
-    //        }
-    //    }
 }
 
 
 
 
-// I have a 2D array, divided into sections
-//        for i in 0..<allArtworks.count {
-//            let longAndLat = Double(allArtworks[i].long)! + Double(allArtworks[i].lat)!
-//            distance.append(longAndLat)
-//
-//        }
-//        for i in 0..<allArtworks.count {
-//            range.append(total - distance[i]) // Stores the range (the disance from current location to each artwork)
-//        }
-
-
 //
 //
 //
-//    func distanceFromLoc() { // grouped by distance
+//    func getCurrentLatLong() -> Double { // grouped by distance
 //        let currentLat = Double((locationManager.location?.coordinate.latitude)!)
 //        let currentLong = Double((locationManager.location?.coordinate.longitude)!)
-//        let total = currentLat + currentLong
+//        return currentLat + currentLong
 //    }
 //
 
 
-//    func sortByDistance() {
 //
-//        let currentLat = Double((locationManager.location?.coordinate.latitude)!)
-//        let currentLong = Double((locationManager.location?.coordinate.longitude)!)
-//        let total = currentLat + currentLong
-//
-//        allArtworks = allArtworks.sorted(by: {$0.lat + $0.long < $1.lat + $1.long})
-//
-//        for i in 0..<allReports.count {
-//            let loc = Double(allArtworks[i].lat)! + Double(allArtworks[i].long)!
-//            let distance = loc - total
-//
-//        }
-
-
-//        var count = 0
-//        allReportsDistance = [[Artwork]()]
-//        allReportsDistance[0].append(allArtworks[0].lat + allArtworks[0].long)
-//
-//        for i in 1..<allArtworks.count {
-//            if (allArtworks[i-1].locationNotes != allArtworks[i].locationNotes) {
-//                count += 1
-//                allReportsDistance.append([allArtworks[i].locationNotes!])
-//            }
-//            allReportsDistance[count].append(allArtworks[i].lat + allArtworks[i].long)
-//        }
-//print(allReportsDistance[2]) // Stores the section, and all the distance following it within that section
-//    }

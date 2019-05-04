@@ -116,15 +116,6 @@
                                     <navigationItem title="Title" id="4ax-Yx-162"/>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="artist" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-Hd-9ee">
-                                <rect key="frame" x="0.0" y="64" width="375" height="31.5"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcr-bG-mRx">
-                                <rect key="frame" x="0.0" y="120" width="375" height="258"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year of work" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6dD-Js-WvD">
                                 <rect key="frame" x="16" y="431" width="199" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -143,37 +134,36 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcr-bG-mRx">
+                                <rect key="frame" x="0.0" y="64" width="375" height="314"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="leading" secondItem="dmq-Hd-9ee" secondAttribute="leading" id="B8J-bV-1Jg"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="trailing" secondItem="COT-qi-Fi4" secondAttribute="trailing" constant="203" id="HUS-0e-kBm"/>
-                            <constraint firstItem="tcr-bG-mRx" firstAttribute="top" secondItem="dmq-Hd-9ee" secondAttribute="bottom" constant="24.5" id="HXj-5C-Z3l"/>
                             <constraint firstItem="Cu2-9h-iL4" firstAttribute="top" secondItem="6dD-Js-WvD" secondAttribute="bottom" constant="17.5" id="Jfy-1m-iSR"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="trailing" secondItem="Cu2-9h-iL4" secondAttribute="trailing" constant="16" id="Jir-lb-x0g"/>
-                            <constraint firstItem="dmq-Hd-9ee" firstAttribute="trailing" secondItem="9uP-n6-UMC" secondAttribute="trailing" id="Oc3-Uy-4Vi"/>
                             <constraint firstItem="tcr-bG-mRx" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" id="Pri-1N-M1a"/>
                             <constraint firstItem="6dD-Js-WvD" firstAttribute="top" secondItem="COT-qi-Fi4" secondAttribute="bottom" constant="8.5" id="SPE-G8-9TY"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="trailing" secondItem="6dD-Js-WvD" secondAttribute="trailing" constant="160" id="Tt2-oS-eZ8"/>
                             <constraint firstItem="tcr-bG-mRx" firstAttribute="trailing" secondItem="9uP-n6-UMC" secondAttribute="trailing" id="VNI-KS-znh"/>
+                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="bottom" secondItem="tcr-bG-mRx" secondAttribute="top" id="XKm-YP-Gt3"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="bottom" secondItem="tcr-bG-mRx" secondAttribute="bottom" constant="289" id="Y8P-Hx-eev"/>
                             <constraint firstItem="COT-qi-Fi4" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="Zus-5g-Gpl"/>
-                            <constraint firstItem="dmq-Hd-9ee" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" id="aWp-5A-6OX"/>
+                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="leading" secondItem="tcr-bG-mRx" secondAttribute="leading" id="d1a-xa-hQK"/>
                             <constraint firstItem="Cu2-9h-iL4" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="dep-IR-Xfk"/>
                             <constraint firstItem="6dD-Js-WvD" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="gYU-Bd-19A"/>
-                            <constraint firstItem="dmq-Hd-9ee" firstAttribute="top" secondItem="oCT-Zl-dcL" secondAttribute="bottom" id="gnL-m8-C9V"/>
                             <constraint firstItem="oCT-Zl-dcL" firstAttribute="bottom" secondItem="9uP-n6-UMC" secondAttribute="top" id="jUv-X5-btr"/>
                             <constraint firstItem="tcr-bG-mRx" firstAttribute="centerX" secondItem="5gx-Wr-uwW" secondAttribute="centerX" id="mkK-jJ-eBu"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="bottom" secondItem="Cu2-9h-iL4" secondAttribute="bottom" constant="20" id="nrC-q3-FKp"/>
                             <constraint firstItem="COT-qi-Fi4" firstAttribute="top" secondItem="tcr-bG-mRx" secondAttribute="bottom" constant="25" id="tc6-ai-b32"/>
-                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="trailing" secondItem="dmq-Hd-9ee" secondAttribute="trailing" id="znn-ZW-Ram"/>
+                            <constraint firstItem="oCT-Zl-dcL" firstAttribute="trailing" secondItem="tcr-bG-mRx" secondAttribute="trailing" id="v8G-CZ-WNf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9uP-n6-UMC"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Artwork" id="BvU-Ao-shw"/>
+                    <navigationItem key="navigationItem" title="Artwork Artist" id="BvU-Ao-shw"/>
                     <connections>
                         <outlet property="imageView" destination="tcr-bG-mRx" id="cdS-c9-7oH"/>
-                        <outlet property="lblAuthor" destination="dmq-Hd-9ee" id="prS-W6-pFu"/>
                         <outlet property="lblInfo" destination="Cu2-9h-iL4" id="LFD-lb-IOO"/>
                         <outlet property="lblTitle" destination="COT-qi-Fi4" id="I5H-3q-LRt"/>
                         <outlet property="lblYearOfWork" destination="6dD-Js-WvD" id="zOR-r7-Kzv"/>
