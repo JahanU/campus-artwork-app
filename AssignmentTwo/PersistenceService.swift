@@ -43,6 +43,49 @@ class PersistenceService {
         }
     }
     
+    static func checkCoreData(aReportTitle: String) -> Bool { // Return true if the artwork is in core data already
+
+        let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
+
+        do {
+            let result = try persistentContainer.viewContext.fetch(fetchRequest)
+            
+            for data in result { // Loop through all the fav reports from CoreData
+                let title = data.value(forKey: "title") as? String
+                
+                // If the entity matches the report given, get the favourite value.
+                if (title == aReportTitle) {
+                    print("matched")
+                    return true
+                }
+            }
+        }
+        catch {
+            print("Could not find favourite report")
+        }
+        
+        return false // If it could not find the report, then return false
+    }
+    
+    
+//    static func unFave(aArtwork: ArtworkCore) {
+//        // find the report that matches what they passed in.
+//        // check if it matches core data, then delete it
+//        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "ArtworkCore")
+//
+//        // Finds a match given the report
+//        let predicate = NSPredicate(format: "title = %@", aArtwork.title!)
+//
+//        fetch.predicate = predicate // Fetches the match result
+//        let request = NSBatchDeleteRequest(fetchRequest: fetch) // Request to delete fav from core data
+//        do {
+//            try persistentContainer.viewContext.execute(request) // Execute the delete action into the coredata container
+//        }
+//        catch {
+//            print("Cannot find report to delete")
+//        }
+//    }
+    
     static func clearCoreData() { // Loops through core data and deletes all entities
         let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
         do {

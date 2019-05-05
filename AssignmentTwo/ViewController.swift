@@ -20,13 +20,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var reports: [String: [Artwork]]!
     var allArtworks = [Artwork]()
-    var fileNames = [String]()
+    
     var artworkLocationNotes = [String]()
     var searchArtworkSection = [String]()
-    var artworkSection = [String]()
     var searchArtworkTitle = [String]()
     var artworkTitles = [String]()
-    var artworkArtist = [String]()
     
     var searching = false
     
@@ -42,24 +40,36 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        decodeJson()
         
 //        PersistenceService.clearCoreData()
+        decodeJson()
+        
         let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
         do {
             let artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
             
+            print("coreData \(artworksCoreData.count)")
+
             let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
             let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
-            let current = 50.00
+            let current = currentLat + currentLong
+            
+            print("current location is: \(current)")
+            
+//            self.artworksCoreData = artworksCoreData.sorted(by: {
+//                (Double($0.lat) + Double($0.long)).distance(to: current) < (Double($1.lat) + Double($1.long)).distance(to: current)
+//            })
             
             self.artworksCoreData = artworksCoreData.sorted(by: {
-                (Double($0.lat) + Double($0.long)).distance(to: current) < (Double($1.lat) + Double($1.long)).distance(to: current)
-            })
+                (Double($0.lat) + Double($0.long)) - current < (Double($1.lat) + Double($1.long)) - current})
+            
+            for i in 0..<self.artworksCoreData.count {
+                print("\(i) + \(self.artworksCoreData[i].locationNotes)")
+            }
             
             self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
-            print(self.artworksCoreData)
         }
+            
         catch {
             print("error")
         }
@@ -175,6 +185,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func decodeJson() { // Importing the JSON and storing it into an array
+        
+        var fileNames = [String]()
+        
         if let url = URL(string: "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artworksOnCampus/data.php?class=campus_artworks&lastUpdate=2017-11-01") {
             let session = URLSession.shared
             
@@ -182,42 +195,49 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 guard let jsonData = data else { return }
                 
-                let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
-                let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
-                  let current = currentLat + currentLong
-                
                 do {
                     let decoder = JSONDecoder()
                     let getArtworks = try decoder.decode(AllArtworks.self, from: jsonData)
                     self.allArtworks = getArtworks.campus_artworks
                     
-//                    self.allArtworks = self.allArtworks.sorted(by: {
-//                        (Double($0.lat)! + Double($0.long)!).distance(to: current) < (Double($1.lat)! + Double($1.long)!).distance(to: current)
-//                    })
+                    //                    self.allArtworks = self.allArtworks.sorted(by: {
+                    //                        (Double($0.lat)! + Double($0.long)!).distance(to: current) < (Double($1.lat)! + Double($1.long)!).distance(to: current)
+                    //                    })
+                    
                     self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
                     
                     for (key, _) in self.reports {
                         self.artworkLocationNotes.append(key)
                     }
                     
+//                     Check if the JSON has new files or if it is already stored in core data:
+                 
                     for i in 0..<self.allArtworks.count {
                         let artworkCore = ArtworkCore(context: PersistenceService.context)
                         
-                        artworkCore.title = self.allArtworks[i].title
+                        if (PersistenceService.checkCoreData(aReportTitle: self.allArtworks[i].title!)){
+                            print("Already in core data: dont save again!")
+                        }
                         
-                        artworkCore.artist = self.allArtworks[i].artist
-                        artworkCore.information = self.allArtworks[i].Information
-                        artworkCore.yearOfWork = self.allArtworks[i].yearOfWork
-                        artworkCore.locationNotes = self.allArtworks[i].locationNotes
-                        
-                        artworkCore.lat = Double(self.allArtworks[i].lat)!
-                        artworkCore.long = Double(self.allArtworks[i].long)!
-                        self.artworksCoreData.append(artworkCore)
-                        
-                        self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
-                        self.artworkSection.append(self.allArtworks[i].locationNotes!)
-                        self.fileNames.append(self.allArtworks[i].fileName!)
+                        else {
+                            print("adding new!")
+                            artworkCore.title = self.allArtworks[i].title
+                            artworkCore.artist = self.allArtworks[i].artist
+                            artworkCore.information = self.allArtworks[i].Information
+                            artworkCore.yearOfWork = self.allArtworks[i].yearOfWork
+                            artworkCore.locationNotes = self.allArtworks[i].locationNotes
+
+                            artworkCore.lat = Double(self.allArtworks[i].lat)!
+                            artworkCore.long = Double(self.allArtworks[i].long)!
+
+                            self.artworksCoreData.append(artworkCore)
+
+                            self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
+                            fileNames.append(self.allArtworks[i].fileName!)
+                        }
                     }
+                    
+                    print("all artworks \(self.allArtworks.count)")
                     
                     PersistenceService.saveContext()
                     
@@ -225,11 +245,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         self.table.reloadData()
                     })
                     
-                    self.cacheAllImages()
+                    self.cacheAllImages(fileNames: fileNames)
                 }
+                    
                 catch let jsonErr {
                     print("Error decoding JSON", jsonErr)
                 }
+                
                 }
                 .resume()
             
@@ -256,13 +278,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         task.resume()
     }
     
-    func cacheAllImages() {
+    func cacheAllImages(fileNames: [String]) {
         let queue = OperationQueue.main
         queue.maxConcurrentOperationCount = 3
         
-        for i in 0..<self.fileNames.count {
+        for i in 0..<fileNames.count {
             queue.addOperation {
-                self.download(fileName: self.fileNames[i])
+                self.download(fileName: fileNames[i])
             }
         }
     }
@@ -304,11 +326,6 @@ extension ViewController: UISearchBarDelegate {
     }
     
 }
-
-
-
-
-//
 //
 //
 //    func getCurrentLatLong() -> Double { // grouped by distance
