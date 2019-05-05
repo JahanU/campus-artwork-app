@@ -215,6 +215,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     for i in 0..<self.allArtworks.count {
                         let artworkCore = ArtworkCore(context: PersistenceService.context)
                         
+                        self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
+                        fileNames.append(self.allArtworks[i].fileName!)
+                        
                         if (PersistenceService.checkCoreData(aReportTitle: self.allArtworks[i].title!)){
                             print("Already in core data: dont save again!")
                         }
@@ -232,8 +235,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
                             self.artworksCoreData.append(artworkCore)
 
-                            self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
-                            fileNames.append(self.allArtworks[i].fileName!)
                         }
                     }
                     
@@ -319,21 +320,7 @@ extension ViewController: UISearchBarDelegate {
             table.reloadData()
         }
     }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searching = false
-        searchBar.text = ""
-        table.reloadData()
-    }
     
 }
-//
-//
-//    func getCurrentLatLong() -> Double { // grouped by distance
-//        let currentLat = Double((locationManager.location?.coordinate.latitude)!)
-//        let currentLong = Double((locationManager.location?.coordinate.longitude)!)
-//        return currentLat + currentLong
-//    }
-//
 
 
-//
