@@ -22,6 +22,7 @@ extension ArtworkCore {
     @NSManaged public var locationNotes: String?
     @NSManaged public var title: String?
     @NSManaged public var yearOfWork: String?
+    @NSManaged public var fileName: String?
     @NSManaged public var lat: Double
     @NSManaged public var long: Double
 

@@ -12,7 +12,8 @@ class DetailViewController: UIViewController {
 
     // MARK: - Property
 
-    var desArtworkDetail: Artwork? // Stores the report that was passed from view controller
+    var fileName: Artwork? // Stores the report that was passed from view controller
+    var desArtworkDetail: ArtworkCore?! // Stores the report that was passed from view controller
     var cache: NSCache<NSString, NSData>?
 
     @IBOutlet weak var lblInfo: UILabel!
@@ -27,9 +28,10 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         title = desArtworkDetail?.locationNotes ?? "No Location notes"
-        lblArtist.text = desArtworkDetail?.artist ?? "No Artist"
-        lblYearOfWork.text = desArtworkDetail?.yearOfWork ?? "No Year of work"
-        lblInfo.text = desArtworkDetail?.Information ?? "No Information"
+        lblTitle.text = desArtworkDetail?.title ?? "No title"
+        lblArtist.text = "By " + (desArtworkDetail?.artist)! ?? "No Artist"
+        lblYearOfWork.text = "Made in " + (desArtworkDetail?.yearOfWork)! ?? "No Year of work"
+        lblInfo.text = desArtworkDetail?.information ?? "No Information"
         
         if let key = desArtworkDetail?.fileName as NSString?,
             let image = cache?.object(forKey: key) as Data? {

@@ -19,6 +19,7 @@
 		C59A3024227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59A3022227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift */; };
 		C59A3025227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59A3023227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift */; };
 		C5E860122261208500E9C804 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E860112261208500E9C804 /* DetailViewController.swift */; };
+		C5F199AA2280B5F90000D425 /* BuildingArtworksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F199A92280B5F90000D425 /* BuildingArtworksController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		C59A3022227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ArtworkCore+CoreDataClass.swift"; path = "../ArtworkCore+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C59A3023227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ArtworkCore+CoreDataProperties.swift"; path = "../ArtworkCore+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C5E860112261208500E9C804 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = ../DetailViewController.swift; sourceTree = "<group>"; };
+		C5F199A92280B5F90000D425 /* BuildingArtworksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingArtworksController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				C57CCA96225A556100CC4B8B /* ViewController.swift */,
 				C57CCAA9225A584900CC4B8B /* JsonStruct.swift */,
 				C57CCA98225A556100CC4B8B /* Main.storyboard */,
+				C5F199A92280B5F90000D425 /* BuildingArtworksController.swift */,
 				C57CCA9E225A556400CC4B8B /* Assets.xcassets */,
 				C57CCAA0225A556400CC4B8B /* LaunchScreen.storyboard */,
 				C57CCAA3225A556400CC4B8B /* Info.plist */,
@@ -165,6 +168,7 @@
 				C5E860122261208500E9C804 /* DetailViewController.swift in Sources */,
 				C57CCAAA225A584900CC4B8B /* JsonStruct.swift in Sources */,
 				C57CCA9D225A556100CC4B8B /* AssignmentTwo.xcdatamodeld in Sources */,
+				C5F199AA2280B5F90000D425 /* BuildingArtworksController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

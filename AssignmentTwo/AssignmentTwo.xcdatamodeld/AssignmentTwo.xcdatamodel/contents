@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G3025" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ArtworkCore" representedClassName="ArtworkCore" syncable="YES">
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="information" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="locationNotes" optional="YES" attributeType="String" syncable="YES"/>
@@ -10,6 +11,6 @@
         <attribute name="yearOfWork" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ArtworkCore" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="ArtworkCore" positionX="-63" positionY="-18" width="128" height="165"/>
     </elements>
 </model>
