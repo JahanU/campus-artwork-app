@@ -23,6 +23,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var allArtworks = [Artwork]()
     
     var artworkLocationNotes = [String]()
+    var artworkLocationNotesCoreData = [String]()
+
     var searchArtworkSection = [String]()
     var searchArtworkTitle = [String]()
     var artworkTitles = [String]()
@@ -75,15 +77,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.artworksCoreData = self.artworksCoreData.sorted(by: {
                 (Double($0.lat) + Double($0.long)) - current < (Double($1.lat) + Double($1.long)) - current})
             
-            // have a dict, key as the location, value as the core data artwork.
             
+            // I think, I need to save the location notes as keys?, like the example In tableview
             for i in 0..<self.artworksCoreData.count {
-                print("\(i) + \(self.artworksCoreData[i].locationNotes!)")
+                self.artworkLocationNotesCoreData.append(self.artworksCoreData[i].locationNotes!)
+//                self.artworksCoreDataDict.updateValue(artworksCoreData, forKey: artworkLocationNotesCoreData[i])
             }
-            groupedByBuilding(artworkArray: self.artworksCoreData)
-            //            self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
             
-       
+            // So basically when you do this, it will rearrange the dict in a random order (from core data)
+            self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
+
+
+            
+//            groupedByBuilding(artworkArray: self.artworksCoreData)
         }
             
         catch {
@@ -92,34 +98,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     // converts the sorted JSON array into a 2D array orgnasied by the year
-    func groupedByBuilding(artworkArray: [ArtworkCore]) {
-        
-        var count = 0 // Stores the element position of the year array within the 2D array
-        self.allReports = [[ArtworkCore]()] // Initalising 2D array to store type techReport
-        self.allReports[0].append(artworkArray[0]) // Appends the first section of reports (2018 reports only)
-        
-        print(self.allReports.count)
-        
-        for i in 1..<artworkArray.count {
-            if (artworkArray[i-1].locationNotes != artworkArray[i].locationNotes) { //
-                count += 1
-                self.allReports.append([ArtworkCore]())
-            }
-             if (artworkArray[i-1].locationNotes == artworkArray[i].locationNotes) { //
-                self.allReports.append([ArtworkCore]())
-            }
-            
-            self.allReports[count].append(artworkArray[i]) // Adds current report selected to the correct associated year
-        }
-        
-        print("!--- \(self.allReports.count)")
-        print("!--- \(self.allReports[0].count)")
-        print("!--- \(self.allReports[1].count)")
-        print("!--- \(self.allReports[2].count)")
-        print("!--- \(self.allReports[3].count)")
-
-        print(self.allReports)
-    }
+//    func groupedByBuilding(artworkArray: [ArtworkCore]) {
+//
+//        var count = 0 // Stores the element position of the year array within the 2D array
+//        self.allReports = [[ArtworkCore]()] // Initalising 2D array to store type techReport
+//        self.allReports[0].append(artworkArray[0]) // Appends the first section of reports (2018 reports only)
+//
+//        print(self.allReports.count)
+//
+//        for i in 1..<artworkArray.count {
+//            if (artworkArray[i-1].locationNotes != artworkArray[i].locationNotes) { //
+//                count += 1
+//                self.allReports.append([ArtworkCore]())
+//            }
+//             if (artworkArray[i-1].locationNotes == artworkArray[i].locationNotes) { //
+//                self.allReports.append([ArtworkCore]())
+//            }
+//
+//            self.allReports[count].append(artworkArray[i]) // Adds current report selected to the correct associated year
+//        }
+//    }
     
     
     
@@ -195,9 +193,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         else {
             
-            print("!!! \(allReports.count)")
-//            let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row]
-            let artwork = allReports[indexPath.section][indexPath.row] // Stores the report given the section & row
+            let artwork = artworksCoreDataDict[artworkLocationNotesCoreData[indexPath.section]]![indexPath.row] // doesnt work, needs to be keys, similar to this example:
+            
+//            self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
+//            for (key, _) in self.reports {
+//                self.artworkLocationNotes.append(key)
+//            }
+            // when I tried to append it normally it didnt work lol
+
+//            let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row] // does work
+            
+            
+//            let artwork = allReports[indexPath.section][indexPath.row] // Stores the report given the section & row
 
             cell.textLabel?.text = artwork.title
             cell.detailTextLabel?.text = artwork.artist
