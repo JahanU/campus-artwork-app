@@ -16,22 +16,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // MARK: - Property
     var allReports = [[ArtworkCore]]() //
     
+    var allArtworks = [Artwork]()
+    var reports: [String: [Artwork]]!
+    var artworkLocationNotes = [String]()
+    
     var artworksCoreData = [ArtworkCore]()
     var artworksCoreDataDict: [String:[ArtworkCore]]!
-    
-    var reports: [String: [Artwork]]!
-    var allArtworks = [Artwork]()
-    
-    var artworkLocationNotes = [String]()
     var artworkLocationNotesCoreData = [String]()
-
+    
+    // Used to filter the search results. i.e. the section and artwork title
     var searchArtworkSection = [String]()
     var searchArtworkTitle = [String]()
     var artworkTitles = [String]()
-    
+    var count = 0
+
     var searching = false
     
     var locationManager = CLLocationManager()
+    
+    //    let current: Int?
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var map: MKMapView!
@@ -43,6 +46,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         //        PersistenceService.clearCoreData()
         decodeJson()
@@ -59,14 +63,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
         do {
-            self.artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
             
             let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
             let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
             let current = currentLat + currentLong
             
-            print("coredata count: \(self.artworksCoreData.count)")
+            self.artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
             
+            //            print("coredata count: \(self.artworksCoreData.count)")
             //            print("current location is: \(current)")
             
             //            self.artworksCoreData = artworksCoreData.sorted(by: {
@@ -74,22 +78,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             //            })
             
             
-            self.artworksCoreData = self.artworksCoreData.sorted(by: {
+            // Sorting the core data artwork array based on distance from current location
+            artworksCoreData = artworksCoreData.sorted(by: {
                 (Double($0.lat) + Double($0.long)) - current < (Double($1.lat) + Double($1.long)) - current})
             
+            artworksCoreDataDict = Dictionary(grouping: artworksCoreData, by: { $0.locationNotes! })
+           
             
-            // I think, I need to save the location notes as keys?, like the example In tableview
-            for i in 0..<self.artworksCoreData.count {
-                self.artworkLocationNotesCoreData.append(self.artworksCoreData[i].locationNotes!)
-//                self.artworksCoreDataDict.updateValue(artworksCoreData, forKey: artworkLocationNotesCoreData[i])
+            print("sorted artist")
+            for i in 0..<artworksCoreData.count {
+                print(artworksCoreData[i].artist!)
+                if !(artworkLocationNotesCoreData.contains(artworksCoreData[i].locationNotes!)) {
+                    print(artworksCoreData[i].locationNotes!)
+                    artworkLocationNotesCoreData.append(artworksCoreData[i].locationNotes!)
+                }
             }
-            
-            // So basically when you do this, it will rearrange the dict in a random order (from core data)
-            self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
-
-
-            
-//            groupedByBuilding(artworkArray: self.artworksCoreData)
         }
             
         catch {
@@ -97,27 +100,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    // converts the sorted JSON array into a 2D array orgnasied by the year
-//    func groupedByBuilding(artworkArray: [ArtworkCore]) {
-//
-//        var count = 0 // Stores the element position of the year array within the 2D array
-//        self.allReports = [[ArtworkCore]()] // Initalising 2D array to store type techReport
-//        self.allReports[0].append(artworkArray[0]) // Appends the first section of reports (2018 reports only)
-//
-//        print(self.allReports.count)
-//
-//        for i in 1..<artworkArray.count {
-//            if (artworkArray[i-1].locationNotes != artworkArray[i].locationNotes) { //
-//                count += 1
-//                self.allReports.append([ArtworkCore]())
-//            }
-//             if (artworkArray[i-1].locationNotes == artworkArray[i].locationNotes) { //
-//                self.allReports.append([ArtworkCore]())
-//            }
-//
-//            self.allReports[count].append(artworkArray[i]) // Adds current report selected to the correct associated year
-//        }
-//    }
+    
     
     
     
@@ -127,10 +110,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if (searching && searchArtworkSection.count != 0) {
             for x in 0..<searchArtworkTitle.count {
-                for y in 0..<allArtworks.count {
+                for y in 0..<artworksCoreData.count {
                     
-                    if (searchArtworkSection[x] == allArtworks[y].locationNotes) {
-                        //         print("found match sections: \(searchArtworkSection.count)")
+                    if (searchArtworkSection[x] == artworksCoreData[y].locationNotes) {
                         sec = searchArtworkSection[x]
                         if (sec!.isEmpty) {
                             return "Searching"
@@ -142,20 +124,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
-        if (searching == false && searchArtworkSection.count == 0) {
-            return artworkLocationNotes[section]
-        }
+
+            if (searching == false && searchArtworkSection.count == 0) {
+                return artworkLocationNotesCoreData[section]
+            }
+        
         
         return "false"
     }
     
     // returns the range of years,  so from from 2001 - 2018 (Returns 18 sections)
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (searching) ? searchArtworkTitle.count : self.artworkLocationNotes.count
+        return (searching) ? searchArtworkTitle.count : artworkLocationNotesCoreData.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (searching) ? searchArtworkTitle.count : reports[artworkLocationNotes[section]]?.count ?? 0
+        return (searching) ? searchArtworkTitle.count : reports[artworkLocationNotesCoreData[section]]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -191,30 +175,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
-        else {
+        else  {
             
             let artwork = artworksCoreDataDict[artworkLocationNotesCoreData[indexPath.section]]![indexPath.row] // doesnt work, needs to be keys, similar to this example:
-            
-//            self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
-//            for (key, _) in self.reports {
-//                self.artworkLocationNotes.append(key)
-//            }
-            // when I tried to append it normally it didnt work lol
-
 //            let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row] // does work
-            
-            
-//            let artwork = allReports[indexPath.section][indexPath.row] // Stores the report given the section & row
-
+           
             cell.textLabel?.text = artwork.title
             cell.detailTextLabel?.text = artwork.artist
-            
-            let annotation = MKPointAnnotation()
-            let coordinate = CLLocationCoordinate2D(latitude: artwork.lat, longitude: artwork.long) // Pinpoint the coordinates
-            annotation.coordinate = coordinate
-            annotation.title = artwork.title // Add & set title
-            self.map.addAnnotation(annotation)
         }
+      
         return cell
     }
     
@@ -231,6 +200,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.map.setRegion(region, animated: true)
     }
     
+    func addAnnotationsSection() {
+        for i in 0..<self.allArtworks.count {
+            let annotation = MKPointAnnotation()
+            annotation.title = self.allArtworks[i].locationNotes
+            
+            let artwork = reports[annotation.title!]?.first
+            annotation.coordinate = CLLocationCoordinate2D(latitude: Double(artwork!.lat)!, longitude: Double(artwork!.long)!)
+            self.map.addAnnotation(annotation)
+        }
+    }
     
     func decodeJson() { // Importing the JSON and storing it into an array
         
@@ -248,15 +227,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     let getArtworks = try decoder.decode(AllArtworks.self, from: jsonData)
                     self.allArtworks = getArtworks.campus_artworks
                     
-                    //                    self.allArtworks = self.allArtworks.sorted(by: {
-                    //                        (Double($0.lat)! + Double($0.long)!).distance(to: current) < (Double($1.lat)! + Double($1.long)!).distance(to: current)
-                    //                    })
-                    
                     self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
                     for (key, _) in self.reports {
                         self.artworkLocationNotes.append(key)
                     }
-                    
+                    //
                     for i in 0..<self.allArtworks.count {
                         
                         self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
@@ -282,7 +257,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     }
                     print("all artworks \(self.allArtworks.count)")
                     
+                    print("Loading tableview from Core data")
+                    self.saveToCoreDataDict()
+                    
+                    
                     DispatchQueue.main.async(execute: {
+                        self.addAnnotationsSection()
                         self.table.reloadData()
                     })
                     
@@ -293,8 +273,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     print("Error decoding JSON", jsonErr)
                 }
                 
-                print("Loading tableview from Core data")
-                self.saveToCoreDataDict()
                 
                 }
                 .resume()
@@ -367,3 +345,26 @@ extension ViewController: UISearchBarDelegate {
 }
 
 
+
+
+// converts the sorted JSON array into a 2D array orgnasied by the year
+//    func groupedByBuilding(artworkArray: [ArtworkCore]) {
+//
+//        var count = 0 // Stores the element position of the year array within the 2D array
+//        self.allReports = [[ArtworkCore]()] // Initalising 2D array to store type techReport
+//        self.allReports[0].append(artworkArray[0]) // Appends the first section of reports (2018 reports only)
+//
+//        print(self.allReports.count)
+//
+//        for i in 1..<artworkArray.count {
+//            if (artworkArray[i-1].locationNotes != artworkArray[i].locationNotes) { //
+//                count += 1
+//                self.allReports.append([ArtworkCore]())
+//            }
+//             if (artworkArray[i-1].locationNotes == artworkArray[i].locationNotes) { //
+//                self.allReports.append([ArtworkCore]())
+//            }
+//
+//            self.allReports[count].append(artworkArray[i]) // Adds current report selected to the correct associated year
+//        }
+//    }

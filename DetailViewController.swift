@@ -19,14 +19,15 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lblYearOfWork: UILabel!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-
+    @IBOutlet weak var lblArtist: UILabel!
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = desArtworkDetail?.artist ?? "No Artist"
-        lblTitle.text = desArtworkDetail?.title ?? "No Title"
+        title = desArtworkDetail?.locationNotes ?? "No Location notes"
+        lblArtist.text = desArtworkDetail?.artist ?? "No Artist"
         lblYearOfWork.text = desArtworkDetail?.yearOfWork ?? "No Year of work"
         lblInfo.text = desArtworkDetail?.Information ?? "No Information"
         
