@@ -55,7 +55,7 @@ class PersistenceService {
                 
                 // If the entity matches the report given, get the favourite value.
                 if (title == aReportTitle) {
-                    print("matched")
+//                    print("matched")
                     return true
                 }
             }

@@ -14,6 +14,7 @@ import CoreData
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
     
     // MARK: - Property
+    var allReports = [[ArtworkCore]]() //
     
     var artworksCoreData = [ArtworkCore]()
     var artworksCoreDataDict: [String:[ArtworkCore]]!
@@ -41,38 +42,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        PersistenceService.clearCoreData()
+        //        PersistenceService.clearCoreData()
         decodeJson()
-        
-        let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
-        do {
-            let artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
-            
-            print("coreData \(artworksCoreData.count)")
-
-            let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
-            let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
-            let current = currentLat + currentLong
-            
-            print("current location is: \(current)")
-            
-//            self.artworksCoreData = artworksCoreData.sorted(by: {
-//                (Double($0.lat) + Double($0.long)).distance(to: current) < (Double($1.lat) + Double($1.long)).distance(to: current)
-//            })
-            
-            self.artworksCoreData = artworksCoreData.sorted(by: {
-                (Double($0.lat) + Double($0.long)) - current < (Double($1.lat) + Double($1.long)) - current})
-            
-            for i in 0..<self.artworksCoreData.count {
-                print("\(i) + \(self.artworksCoreData[i].locationNotes)")
-            }
-            
-            self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
-        }
-            
-        catch {
-            print("error")
-        }
         
         table.reloadData()
         locationManager.delegate = self as CLLocationManagerDelegate
@@ -80,6 +51,74 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func saveToCoreDataDict() {
+        
+        let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
+        do {
+            self.artworksCoreData = try PersistenceService.context.fetch(fetchRequest)
+            
+            let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
+            let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
+            let current = currentLat + currentLong
+            
+            print("coredata count: \(self.artworksCoreData.count)")
+            
+            //            print("current location is: \(current)")
+            
+            //            self.artworksCoreData = artworksCoreData.sorted(by: {
+            //                (Double($0.lat) + Double($0.long)).distance(to: current) < (Double($1.lat) + Double($1.long)).distance(to: current)
+            //            })
+            
+            
+            self.artworksCoreData = self.artworksCoreData.sorted(by: {
+                (Double($0.lat) + Double($0.long)) - current < (Double($1.lat) + Double($1.long)) - current})
+            
+            // have a dict, key as the location, value as the core data artwork.
+            
+            for i in 0..<self.artworksCoreData.count {
+                print("\(i) + \(self.artworksCoreData[i].locationNotes!)")
+            }
+            groupedByBuilding(artworkArray: self.artworksCoreData)
+            //            self.artworksCoreDataDict = Dictionary(grouping: self.artworksCoreData, by: { $0.locationNotes! })
+            
+       
+        }
+            
+        catch {
+            print("error")
+        }
+    }
+    
+    // converts the sorted JSON array into a 2D array orgnasied by the year
+    func groupedByBuilding(artworkArray: [ArtworkCore]) {
+        
+        var count = 0 // Stores the element position of the year array within the 2D array
+        self.allReports = [[ArtworkCore]()] // Initalising 2D array to store type techReport
+        self.allReports[0].append(artworkArray[0]) // Appends the first section of reports (2018 reports only)
+        
+        print(self.allReports.count)
+        
+        for i in 1..<artworkArray.count {
+            if (artworkArray[i-1].locationNotes != artworkArray[i].locationNotes) { //
+                count += 1
+                self.allReports.append([ArtworkCore]())
+            }
+             if (artworkArray[i-1].locationNotes == artworkArray[i].locationNotes) { //
+                self.allReports.append([ArtworkCore]())
+            }
+            
+            self.allReports[count].append(artworkArray[i]) // Adds current report selected to the correct associated year
+        }
+        
+        print("!--- \(self.allReports.count)")
+        print("!--- \(self.allReports[0].count)")
+        print("!--- \(self.allReports[1].count)")
+        print("!--- \(self.allReports[2].count)")
+        print("!--- \(self.allReports[3].count)")
+
+        print(self.allReports)
     }
     
     
@@ -93,7 +132,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 for y in 0..<allArtworks.count {
                     
                     if (searchArtworkSection[x] == allArtworks[y].locationNotes) {
-                        //                        print("found match sections: \(searchArtworkSection.count)")
+                        //         print("found match sections: \(searchArtworkSection.count)")
                         sec = searchArtworkSection[x]
                         if (sec!.isEmpty) {
                             return "Searching"
@@ -114,11 +153,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // returns the range of years,  so from from 2001 - 2018 (Returns 18 sections)
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (searching == true) ? searchArtworkTitle.count : self.artworkLocationNotes.count
+        return (searching) ? searchArtworkTitle.count : self.artworkLocationNotes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (searching == true) ? searchArtworkTitle.count : reports[artworkLocationNotes[section]]?.count ?? 0
+        return (searching) ? searchArtworkTitle.count : reports[artworkLocationNotes[section]]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -156,8 +195,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         else {
             
-            let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row]
-            
+            print("!!! \(allReports.count)")
+//            let artwork = artworksCoreDataDict[artworkLocationNotes[indexPath.section]]![indexPath.row]
+            let artwork = allReports[indexPath.section][indexPath.row] // Stores the report given the section & row
+
             cell.textLabel?.text = artwork.title
             cell.detailTextLabel?.text = artwork.artist
             
@@ -205,42 +246,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     //                    })
                     
                     self.reports = Dictionary(grouping: self.allArtworks, by: { $0.locationNotes! })
-                    
                     for (key, _) in self.reports {
                         self.artworkLocationNotes.append(key)
                     }
                     
-//                     Check if the JSON has new files or if it is already stored in core data:
-                 
                     for i in 0..<self.allArtworks.count {
-                        let artworkCore = ArtworkCore(context: PersistenceService.context)
                         
                         self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
-                        fileNames.append(self.allArtworks[i].fileName!)
+                        fileNames.append(self.allArtworks[i].fileName!) // used to find the image from URL
                         
+                        // Check if the JSON has new files or if it is already stored in core data:
                         if (PersistenceService.checkCoreData(aReportTitle: self.allArtworks[i].title!)){
-                            print("Already in core data: dont save again!")
+                            //                            print("Already in core data: dont need to save again")
                         }
-                        
+                            
                         else {
-                            print("adding new!")
-                            artworkCore.title = self.allArtworks[i].title
-                            artworkCore.artist = self.allArtworks[i].artist
-                            artworkCore.information = self.allArtworks[i].Information
-                            artworkCore.yearOfWork = self.allArtworks[i].yearOfWork
-                            artworkCore.locationNotes = self.allArtworks[i].locationNotes
-
+                            //                            print("Adding new artwork")
+                            let artworkCore = ArtworkCore(context: PersistenceService.context)
+                            artworkCore.title = self.allArtworks[i].title!
+                            artworkCore.artist = self.allArtworks[i].artist!
+                            artworkCore.information = self.allArtworks[i].Information!
+                            artworkCore.yearOfWork = self.allArtworks[i].yearOfWork!
+                            artworkCore.locationNotes = self.allArtworks[i].locationNotes!
                             artworkCore.lat = Double(self.allArtworks[i].lat)!
                             artworkCore.long = Double(self.allArtworks[i].long)!
-
-                            self.artworksCoreData.append(artworkCore)
-
+                            PersistenceService.saveContext()
                         }
                     }
-                    
                     print("all artworks \(self.allArtworks.count)")
-                    
-                    PersistenceService.saveContext()
                     
                     DispatchQueue.main.async(execute: {
                         self.table.reloadData()
@@ -252,6 +285,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 catch let jsonErr {
                     print("Error decoding JSON", jsonErr)
                 }
+                
+                print("Loading tableview from Core data")
+                self.saveToCoreDataDict()
                 
                 }
                 .resume()
