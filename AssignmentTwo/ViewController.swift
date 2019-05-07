@@ -14,10 +14,9 @@ import CoreData
 class ViewController: UIViewController {
     
     // MARK: - Property
-    
-    var allArtworks = [Artwork]()
+    var allArtworks = [Artwork]() // Stores all the artworks from the JSON
     // CD = Core data
-    var artworksCD = [ArtworkCore]()
+    var artworksCD = [ArtworkCore]() // This array stores the core data entities
     var artworksCDDict: [String:[ArtworkCore]]!
     var artworkLocationNotesCD = [String]()
     
@@ -26,24 +25,21 @@ class ViewController: UIViewController {
     var searchArtworkTitle = [String]()
     var artworkTitles = [String]()
     
-    var searching = false
-    
+    var searching = false // Check if user is searching or not
     var locationManager = CLLocationManager()
-    
+    let cache = NSCache<NSString, NSData>()
+
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var mapView: MKMapView!
-    
-    let cache = NSCache<NSString, NSData>()
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //      PersistenceService.clearCoreData()
-        decodeJson()
+        decodeJson() // Decode the JSON
         setLocation()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 }
 
@@ -192,7 +188,7 @@ extension ViewController {
             
             session.dataTask(with: url) { (data, response, err) in
                 
-                guard let jsonData = data else { return self.loadTableView() } // If no wifi to access JSON we use coredata entities
+                guard let jsonData = data else { return self.loadTableView() } // If no wifi to access JSON we use the coredata entities
                 
                 do {
                     let decoder = JSONDecoder()
@@ -202,7 +198,7 @@ extension ViewController {
                     for i in 0..<self.allArtworks.count {
                         
                         self.artworkTitles.append(self.allArtworks[i].title!) // Used to filter the search titles
-                        fileNames.append(self.allArtworks[i].fileName!) // used to find the image from URL
+                        fileNames.append(self.allArtworks[i].fileName!) // Used to find the image from URL
                         
                         // Check if the JSON has new files or if it is already stored in core data:
                         if (PersistenceService.checkCoreData(aReportTitle: self.allArtworks[i].title!)){
@@ -228,7 +224,7 @@ extension ViewController {
                     
                     self.loadTableView() // after storing the new artworks (if any) we store them into core data and load the tableView
                     
-                    self.cacheAllImages(fileNames: fileNames)
+                    self.cacheAllImages(fileNames: fileNames) // Cache all the images via the artwork file name
                 }
                     
                 catch let jsonErr {
@@ -243,10 +239,10 @@ extension ViewController {
     
     func loadTableView() {
         print("Loading tableview from Core data")
-        self.fetchCoreData()
+        self.fetchCoreData() // Store and load from core data
         
         DispatchQueue.main.async(execute: {
-            self.addAnnotationsSection()
+            self.addAnnotationsSection() // Add annotations to each section
             self.table.reloadData()
         })
     }
@@ -287,7 +283,7 @@ extension ViewController {
         queue.maxConcurrentOperationCount = 3
       
         for i in 0..<artworksCD.count {
-            queue.addOperation {
+            queue.addOperation { // Cache 3 images at a time
                 self.download(fileName: self.artworksCD[i].fileName!)
             }
         }
@@ -296,18 +292,18 @@ extension ViewController {
     
     func download(fileName: String) {
         let session = URLSession.shared
-        
         let baseUrl = "https://cgi.csc.liv.ac.uk/~phil/Teaching/COMP228/artwork_images/"
         
         var url = URL(string: baseUrl)!
-        url.appendPathComponent(fileName)
+        url.appendPathComponent(fileName) // Add the file name to the URL to retrieve the image
         
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url) // Make a request to the URL
         request.cachePolicy = .returnCacheDataElseLoad
         
         let task = session.dataTask(with: request) { [weak self] data, response, error in
         //print("\(Date()) \(fileName)")
             
+        // Cache the image with the associated file name
         self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
         }
         

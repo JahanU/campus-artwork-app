@@ -37,6 +37,7 @@ class DetailViewController: UIViewController {
         
         if let key = desArtworkDetail!.fileName! as NSString?,
             let image = cache?.object(forKey: key) as Data? {
+            lblNoImage.isHidden = true
             imageView.image = UIImage(data: image)
         }
         else {
