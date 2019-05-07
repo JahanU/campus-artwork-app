@@ -48,7 +48,7 @@ class CountryViewController: UIViewController, UITableViewDataSource, UITableVie
         dvc.cache = cache // Sending the cache image
 
         // MARK: - Navigation
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(dvc, animated: true)
         tblView.deselectRow(at: tblView.indexPathForSelectedRow!, animated: true) // Little animation touches
     }
     

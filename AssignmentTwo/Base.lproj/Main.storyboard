@@ -94,7 +94,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="University Of Liverpool Map" id="9a8-Ba-ZPO"/>
+                    <navigationItem key="navigationItem" title="University Of Liverpool Artwork Map" id="9a8-Ba-ZPO"/>
                     <connections>
                         <outlet property="mapView" destination="lxP-gc-KGz" id="odV-y3-uvB"/>
                         <outlet property="searchBar" destination="hVj-QG-87D" id="ybu-jz-WhE"/>
@@ -146,6 +146,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No images" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I4n-Jb-2al">
+                                <rect key="frame" x="0.0" y="234" width="375" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -162,13 +168,17 @@
                             <constraint firstItem="oCT-Zl-dcL" firstAttribute="bottom" secondItem="tcr-bG-mRx" secondAttribute="top" constant="-47" id="XKm-YP-Gt3"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="bottom" secondItem="tcr-bG-mRx" secondAttribute="bottom" constant="289" id="Y8P-Hx-eev"/>
                             <constraint firstItem="COT-qi-Fi4" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="Zus-5g-Gpl"/>
+                            <constraint firstItem="I4n-Jb-2al" firstAttribute="top" secondItem="E0K-H0-U6Q" secondAttribute="bottom" constant="138.5" id="bPr-L7-AjR"/>
                             <constraint firstItem="oCT-Zl-dcL" firstAttribute="leading" secondItem="tcr-bG-mRx" secondAttribute="leading" id="d1a-xa-hQK"/>
                             <constraint firstItem="Cu2-9h-iL4" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="dep-IR-Xfk"/>
                             <constraint firstItem="6dD-Js-WvD" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" constant="16" id="gYU-Bd-19A"/>
+                            <constraint firstItem="I4n-Jb-2al" firstAttribute="leading" secondItem="9uP-n6-UMC" secondAttribute="leading" id="hft-dd-kAk"/>
                             <constraint firstItem="oCT-Zl-dcL" firstAttribute="bottom" secondItem="9uP-n6-UMC" secondAttribute="top" id="jUv-X5-btr"/>
+                            <constraint firstItem="I4n-Jb-2al" firstAttribute="centerX" secondItem="5gx-Wr-uwW" secondAttribute="centerX" id="kVZ-tW-ADj"/>
                             <constraint firstItem="tcr-bG-mRx" firstAttribute="centerX" secondItem="5gx-Wr-uwW" secondAttribute="centerX" id="mkK-jJ-eBu"/>
                             <constraint firstItem="9uP-n6-UMC" firstAttribute="bottom" secondItem="Cu2-9h-iL4" secondAttribute="bottom" constant="20" id="nrC-q3-FKp"/>
                             <constraint firstItem="E0K-H0-U6Q" firstAttribute="top" secondItem="oCT-Zl-dcL" secondAttribute="bottom" constant="10" id="o4f-up-kfx"/>
+                            <constraint firstItem="I4n-Jb-2al" firstAttribute="trailing" secondItem="9uP-n6-UMC" secondAttribute="trailing" id="pci-E6-OgS"/>
                             <constraint firstItem="COT-qi-Fi4" firstAttribute="top" secondItem="tcr-bG-mRx" secondAttribute="bottom" constant="25" id="tc6-ai-b32"/>
                             <constraint firstItem="oCT-Zl-dcL" firstAttribute="trailing" secondItem="tcr-bG-mRx" secondAttribute="trailing" id="v8G-CZ-WNf"/>
                         </constraints>
@@ -179,13 +189,14 @@
                         <outlet property="imageView" destination="tcr-bG-mRx" id="cdS-c9-7oH"/>
                         <outlet property="lblArtist" destination="E0K-H0-U6Q" id="Xpk-hJ-Bzo"/>
                         <outlet property="lblInfo" destination="Cu2-9h-iL4" id="LFD-lb-IOO"/>
+                        <outlet property="lblNoImage" destination="I4n-Jb-2al" id="fet-r5-E6f"/>
                         <outlet property="lblTitle" destination="COT-qi-Fi4" id="I5H-3q-LRt"/>
                         <outlet property="lblYearOfWork" destination="6dD-Js-WvD" id="zOR-r7-Kzv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j74-Bp-buI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1905" y="134"/>
+            <point key="canvasLocation" x="1904.8" y="133.5832083958021"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qFF-Xi-fSL">

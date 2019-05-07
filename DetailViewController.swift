@@ -21,7 +21,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblArtist: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-
+    @IBOutlet weak var lblNoImage: UILabel!
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -37,6 +38,9 @@ class DetailViewController: UIViewController {
         if let key = desArtworkDetail!.fileName! as NSString?,
             let image = cache?.object(forKey: key) as Data? {
             imageView.image = UIImage(data: image)
+        }
+        else {
+            lblNoImage.text = "Require wifi to load image"
         }
     }
 }

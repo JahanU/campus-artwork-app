@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 import CoreData
 
-class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class ViewController: UIViewController {
     
     // MARK: - Property
     
@@ -40,21 +40,24 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        PersistenceService.clearCoreData()
+//      PersistenceService.clearCoreData()
         decodeJson()
-        
-        table.reloadData()
-        locationManager.delegate = self as CLLocationManagerDelegate
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        setLocation()
         // Do any additional setup after loading the view, typically from a nib.
     }
 }
 
 // MARK: - Map
 
-extension ViewController {
+extension ViewController: MKMapViewDelegate, CLLocationManagerDelegate {
+    
+    func setLocation() { // Seeting up current location
+        locationManager.delegate = self as CLLocationManagerDelegate
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
     // Setting the current location to the ashton building, & the zoom of the map
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locationOfUser = locations[0]
@@ -68,15 +71,11 @@ extension ViewController {
         mapView.setRegion(region, animated: true)
     }
     
-    func addAnnotationsSection() {
-        artworksCD.count == 0 ? add(arrCount: allArtworks.count) : add(arrCount: artworksCD.count)
-    }
-    
-    func add(arrCount: Int) {
-        for i in 0..<arrCount {
-            
+    func addAnnotationsSection() { // Adding annotations for each locationNotes section
+        
+        for i in 0..<artworksCD.count {
             let annotation = MKPointAnnotation()
-            annotation.title = allArtworks[i].locationNotes
+            annotation.title = artworksCD[i].locationNotes
             
             let artwork = artworksCDDict[annotation.title!]?.first
             annotation.coordinate = CLLocationCoordinate2D(latitude: artwork!.lat, longitude: artwork!.long)
@@ -85,7 +84,7 @@ extension ViewController {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
+        // If annotation is selected then push new view controller with selected artworks within a building
         if let buildingArtworks = view.annotation?.title {
             let vc = CountryViewController()
 
@@ -193,7 +192,7 @@ extension ViewController {
             
             session.dataTask(with: url) { (data, response, err) in
                 
-                guard let jsonData = data else { return }
+                guard let jsonData = data else { return self.loadTableView() } // If no wifi to access JSON we use coredata entities
                 
                 do {
                     let decoder = JSONDecoder()
@@ -226,15 +225,8 @@ extension ViewController {
                             PersistenceService.saveContext()
                         }
                     }
-                    print("all artworks count \(self.allArtworks.count)")
                     
-                    print("Loading tableview from Core data")
-                    self.fetchCoreData()
-                    
-                    DispatchQueue.main.async(execute: {
-                        self.addAnnotationsSection()
-                        self.table.reloadData()
-                    })
+                    self.loadTableView() // after storing the new artworks (if any) we store them into core data and load the tableView
                     
                     self.cacheAllImages(fileNames: fileNames)
                 }
@@ -249,37 +241,57 @@ extension ViewController {
     }
     
     
+    func loadTableView() {
+        print("Loading tableview from Core data")
+        self.fetchCoreData()
+        
+        DispatchQueue.main.async(execute: {
+            self.addAnnotationsSection()
+            self.table.reloadData()
+        })
+    }
+    
     func fetchCoreData() {
         
-        let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest()
+        let fetchRequest: NSFetchRequest<ArtworkCore> = ArtworkCore.fetchRequest() // request stored core data
         do {
-            
+            // Store current location via latitude and longtitude
             let currentLat = Double((self.locationManager.location?.coordinate.latitude)!)
             let currentLong = Double((self.locationManager.location?.coordinate.longitude)!)
             let current = currentLat + currentLong
             
-            // print("coredata count: \(self.artworksCD.count)")
-            // print("current location is: \(current)")
+            artworksCD = try PersistenceService.context.fetch(fetchRequest) // Store the fetched data
             
-            
-            artworksCD = try PersistenceService.context.fetch(fetchRequest)
-            
-            //            Sorting the core data artwork array based on distance from current location
+            //Sorting the core data artwork array based on distance from current location
             artworksCD = artworksCD.sorted(by: {
                 (Double($0.lat) - Double($0.long)).distance(to: current) < (Double($1.lat) - Double($1.long)).distance(to: current)
             })
             
-            for i in 0..<artworksCD.count {
+            for i in 0..<artworksCD.count { // Storing location notes (not storing duplicates)
                 if !(artworkLocationNotesCD.contains(artworksCD[i].locationNotes!)) {
                     artworkLocationNotesCD.append(artworksCD[i].locationNotes!)
                 }
             }
+            // Converting array into a dictonary via the sorted locationNotes from the array
             artworksCDDict = Dictionary(grouping: artworksCD, by: { $0.locationNotes! })
         }
             
         catch {
             print("error")
         }
+    }
+    
+    func cacheAllImages(fileNames: [String]) {
+        // caching 3 images at a time, makes download less intensive and can load images faster
+        let queue = OperationQueue.main
+        queue.maxConcurrentOperationCount = 3
+      
+        for i in 0..<artworksCD.count {
+            queue.addOperation {
+                self.download(fileName: self.artworksCD[i].fileName!)
+            }
+        }
+        
     }
     
     func download(fileName: String) {
@@ -294,23 +306,12 @@ extension ViewController {
         request.cachePolicy = .returnCacheDataElseLoad
         
         let task = session.dataTask(with: request) { [weak self] data, response, error in
-            //print("\(Date()) \(fileName)")
+        //print("\(Date()) \(fileName)")
             
-            self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
+        self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
         }
         
         task.resume()
-    }
-    
-    func cacheAllImages(fileNames: [String]) {
-        let queue = OperationQueue.main
-        queue.maxConcurrentOperationCount = 3
-        
-        for i in 0..<fileNames.count {
-            queue.addOperation {
-                self.download(fileName: fileNames[i])
-            }
-        }
     }
     
 }
@@ -333,26 +334,3 @@ extension ViewController: UISearchBarDelegate {
     
 }
 
-
-//            self.artworksCD = artworksCD.sorted(by: {
-//                (Double($0.lat) + Double($0.long)).distance(to: current) < (Double($1.lat) + Double($1.long)).distance(to: current)
-//            })
-
-//func mapView(_ map: MKMapView, didSelect view: MKAnnotationView) {
-//    print("hello!")
-//    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//    let vc = storyboard.instantiateViewController(withIdentifier: "BuildingArtworksController") as! BuildingArtworksController
-//
-//    if let building = view.annotation?.title {
-//        print("hellonidjnsaidansdouas!")
-//        print("Sending:")
-//        print((artworksCDDict?[building!])!)
-//        vc.artworks = (artworksCDDict?[building!])!
-//        vc.building = building!
-//        navigationController?.pushViewController(vc, animated: true)
-//    }
-//}
-
-//            artworksCD = artworksCD.sorted(by: {
-//                (Double($0.lat) - Double($0.long)) - current < (Double($1.lat) - Double($1.long)) - current})
-//            artworksCD.reverse()
