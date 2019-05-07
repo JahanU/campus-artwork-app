@@ -315,7 +315,7 @@ extension ViewController {
 extension ViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        if (searchBar.text?.isEmpty == true) {
+        if (searchBar.text?.isEmpty == true) { // If not searching then reset everything
             searching = false
             searchArtworkTitle.removeAll()
             searchArtworkSection.removeAll()
