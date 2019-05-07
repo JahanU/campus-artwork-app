@@ -84,32 +84,17 @@ extension ViewController {
         }
     }
     
-//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//
-//        print("hello!")
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "BuildingArtworksController") as! BuildingArtworksController
-//
-//        if let buildingArtworks = view.annotation?.title {
-//            print("Sending:")
-//            print((artworksCDDict?[buildingArtworks!])!)
-//            vc.artworks = (artworksCDDict?[buildingArtworks!])!
-//            vc.buildingArtworks = buildingArtworks!
-//            navigationController?.pushViewController(vc, animated: true)
-//        }
-//    }
-    
-    //segues to detailed view controller when annotation is pressed
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        //search for title whithin the file
-        let piece = view.annotation?.title
-        let countryVC = CountryViewController()
-        countryVC.artworks = artworksCD
-        self.navigationController?.pushViewController(countryVC, animated: true)
-        
-        
+        if let buildingArtworks = view.annotation?.title {
+            let vc = CountryViewController()
+
+            vc.artworks = (artworksCDDict?[buildingArtworks!])!
+            vc.cache = cache
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
+    
 }
 
 // MARK: - TableView

@@ -13,7 +13,8 @@ class BuildingArtworksController: UITableViewController {
     @IBOutlet weak var tblView: UITableView!
     var buildingArtworks: String!
     var artworks = [ArtworkCore]()
-    
+    var cache: NSCache<NSString, NSData>?
+
     
     override func viewDidLoad() {
         print("Building!")
