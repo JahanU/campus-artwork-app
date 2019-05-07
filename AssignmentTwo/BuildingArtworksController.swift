@@ -24,12 +24,12 @@ class BuildingArtworksController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return artworks.count
+        return  10
     }
-    
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cells", for: indexPath)
         
         cell.textLabel?.text = artworks[indexPath.row].title
         cell.detailTextLabel?.text = artworks[indexPath.row].artist

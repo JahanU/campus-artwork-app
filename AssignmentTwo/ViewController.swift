@@ -104,13 +104,13 @@ extension ViewController {
         
         //search for title whithin the file
         let piece = view.annotation?.title
-        
         print("he")
+        let countryVC = CountryViewController()
+        countryVC.artworks = artworksCD
+        self.navigationController?.pushViewController(countryVC, animated: true)
         
         
-        //print(piece)
-        
-        performSegue(withIdentifier: "showBuildingArtworks", sender: nil)
+//        performSegue(withIdentifier: "showBuildingArtworks", sender: nil)
     }
 }
 
@@ -194,10 +194,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             secondClass.cache = cache // Sending the cache image
         }
             
-        else if let buildingArtworks = segue.destination as? BuildingArtworksController {
-            print("HELLLO!")
-            buildingArtworks.artworks = artworksCD
-        }
+//        else if let buildingArtworks = segue.destination as? BuildingArtworksController {
+//            print("HELLLO!")
+//            buildingArtworks.artworks = artworksCD
+//        }
         
 //        table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
     }
@@ -297,10 +297,6 @@ extension ViewController {
                 }
             }
             artworksCDDict = Dictionary(grouping: artworksCD, by: { $0.locationNotes! })
-            
-            for i in 0..<artworkLocationNotesCD.count {
-                print("\(i) + \(artworkLocationNotesCD[i])")
-            }
         }
             
         catch {
