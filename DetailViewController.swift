@@ -14,8 +14,16 @@ class DetailViewController: UIViewController {
 
     var fileName: Artwork? // Stores the report that was passed from view controller
     var desArtworkDetail: ArtworkCore?! // Stores the report that was passed from view controller
+
     var cache: NSCache<NSString, NSData>?
 
+    
+    var infoS: String?
+    var yearOfWorkS: String?
+    var titleS: String?
+    var artistS: String?
+    
+    
     @IBOutlet weak var lblInfo: UILabel!
     @IBOutlet weak var lblYearOfWork: UILabel!
     @IBOutlet weak var lblTitle: UILabel!
@@ -26,12 +34,14 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        title = titleS ?? "22"
         
-        title = desArtworkDetail?.locationNotes ?? "No Location notes"
-        lblTitle.text = desArtworkDetail?.title ?? "No title"
-        lblArtist.text = "By " + (desArtworkDetail?.artist)! ?? "No Artist"
-        lblYearOfWork.text = "Made in " + (desArtworkDetail?.yearOfWork)! ?? "No Year of work"
-        lblInfo.text = desArtworkDetail?.information ?? "No Information"
+//        title = desArtworkDetail?.locationNotes ?? "No Location notes"
+//        lblTitle.text = desArtworkDetail?.title ?? "No title"
+//        lblArtist.text = "By " + (desArtworkDetail?.artist)! ?? "No Artist"
+//        lblYearOfWork.text = "Made in " + (desArtworkDetail?.yearOfWork)! ?? "No Year of work"
+//        lblInfo.text = desArtworkDetail?.information ?? "No Information"
         
         if let key = desArtworkDetail?.fileName as NSString?,
             let image = cache?.object(forKey: key) as Data? {

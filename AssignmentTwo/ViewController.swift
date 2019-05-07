@@ -104,13 +104,11 @@ extension ViewController {
         
         //search for title whithin the file
         let piece = view.annotation?.title
-        print("he")
         let countryVC = CountryViewController()
         countryVC.artworks = artworksCD
         self.navigationController?.pushViewController(countryVC, animated: true)
         
         
-//        performSegue(withIdentifier: "showBuildingArtworks", sender: nil)
     }
 }
 
@@ -189,17 +187,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         if let secondClass = segue.destination as? DetailViewController {
             let arrayIndexRow = table.indexPathForSelectedRow?.row
             let arrayIndexSection = table.indexPathForSelectedRow?.section
-            let selectedCell = artworksCDDict[artworkLocationNotesCD[arrayIndexSection!]]![arrayIndexRow!]
-            secondClass.desArtworkDetail = selectedCell
+            secondClass.desArtworkDetail = artworksCDDict[artworkLocationNotesCD[arrayIndexSection!]]![arrayIndexRow!]
             secondClass.cache = cache // Sending the cache image
-        }
             
-//        else if let buildingArtworks = segue.destination as? BuildingArtworksController {
-//            print("HELLLO!")
-//            buildingArtworks.artworks = artworksCD
-//        }
-        
-//        table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
+            table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
+
+        }
     }
 }
 

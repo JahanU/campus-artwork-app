@@ -79,7 +79,6 @@
 		C57CCA93225A556100CC4B8B /* AssignmentTwo */ = {
 			isa = PBXGroup;
 			children = (
-				C5A7EA97228184D100D928EC /* CountryVC */,
 				C59A3022227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift */,
 				C59A3023227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift */,
 				C57CCA94225A556100CC4B8B /* AppDelegate.swift */,
@@ -89,6 +88,10 @@
 				C57CCAA9225A584900CC4B8B /* JsonStruct.swift */,
 				C57CCA98225A556100CC4B8B /* Main.storyboard */,
 				C5F199A92280B5F90000D425 /* BuildingArtworksController.swift */,
+				C5A7EA93228181E300D928EC /* CountryViewController.swift */,
+				C5A7EA94228181E300D928EC /* CountryViewController.xib */,
+				C5A7EA8F2281818900D928EC /* countryCell.swift */,
+				C5A7EA902281818900D928EC /* countryCell.xib */,
 				C57CCA9E225A556400CC4B8B /* Assets.xcassets */,
 				C57CCAA0225A556400CC4B8B /* LaunchScreen.storyboard */,
 				C57CCAA3225A556400CC4B8B /* Info.plist */,
@@ -96,17 +99,6 @@
 				C57CCA92225A556100CC4B8B /* Products */,
 			);
 			path = AssignmentTwo;
-			sourceTree = "<group>";
-		};
-		C5A7EA97228184D100D928EC /* CountryVC */ = {
-			isa = PBXGroup;
-			children = (
-				C5A7EA93228181E300D928EC /* CountryViewController.swift */,
-				C5A7EA94228181E300D928EC /* CountryViewController.xib */,
-				C5A7EA8F2281818900D928EC /* countryCell.swift */,
-				C5A7EA902281818900D928EC /* countryCell.xib */,
-			);
-			path = CountryVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

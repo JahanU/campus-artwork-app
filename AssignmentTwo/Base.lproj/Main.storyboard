@@ -108,7 +108,7 @@
         <!--DetailedView-->
         <scene sceneID="3do-Ly-sdx">
             <objects>
-                <viewController title="DetailedView" id="Vps-nu-9d8" customClass="DetailViewController" customModule="AssignmentTwo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" title="DetailedView" id="Vps-nu-9d8" customClass="DetailViewController" customModule="AssignmentTwo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5gx-Wr-uwW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
