@@ -57,6 +57,9 @@
                             </tableView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lxP-gc-KGz">
                                 <rect key="frame" x="0.0" y="64" width="375" height="241"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="i0e-8A-df4"/>
+                                </connections>
                             </mapView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="unx-eo-poj">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -96,7 +99,7 @@
                         <outlet property="mapView" destination="lxP-gc-KGz" id="odV-y3-uvB"/>
                         <outlet property="searchBar" destination="hVj-QG-87D" id="ybu-jz-WhE"/>
                         <outlet property="table" destination="OTt-Ik-xnb" id="ipk-lY-5Ab"/>
-                        <segue destination="pM5-Ur-Lcf" kind="showDetail" id="dhV-jS-3Vx"/>
+                        <segue destination="pM5-Ur-Lcf" kind="showDetail" identifier="showBuildingArtworks" id="dhV-jS-3Vx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -112,7 +115,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCT-Zl-dcL">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="-24" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="4ax-Yx-162"/>
                                 </items>
@@ -136,10 +139,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcr-bG-mRx">
-                                <rect key="frame" x="0.0" y="111" width="375" height="267"/>
+                                <rect key="frame" x="0.0" y="67" width="375" height="311"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E0K-H0-U6Q">
-                                <rect key="frame" x="164" y="74" width="47.5" height="21.5"/>
+                                <rect key="frame" x="164" y="30" width="47.5" height="21.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -185,45 +188,40 @@
             </objects>
             <point key="canvasLocation" x="2631" y="-86"/>
         </scene>
-        <!--Building Artworks-->
+        <!--Building artworks-->
         <scene sceneID="ft9-AN-Np3">
             <objects>
-                <viewController id="pM5-Ur-Lcf" customClass="BuildingArtworks" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FwV-UM-U3z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController title="Building artworks" id="pM5-Ur-Lcf" customClass="BuildingArtworksController" customModule="AssignmentTwo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QPY-Ib-OMI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PFl-Ap-Lab">
-                                <rect key="frame" x="0.0" y="168" width="375" height="499"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PFa-tY-bbd">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rDn-2i-j8c">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="LWD-MX-Jpk">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rDn-2i-j8c" id="KHC-ce-gLq">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LWD-MX-Jpk" id="xgv-vr-f8X">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="pM5-Ur-Lcf" id="Rdc-kP-hxv"/>
-                                    <outlet property="delegate" destination="pM5-Ur-Lcf" id="xP4-0o-0HB"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="136-gR-N4V"/>
                     </view>
                     <connections>
-                        <outlet property="tblView" destination="PFl-Ap-Lab" id="QkP-5e-uID"/>
                         <segue destination="Vps-nu-9d8" kind="showDetail" id="glU-fU-4Cs"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FwV-UM-U3z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="586"/>
+            <point key="canvasLocation" x="1852" y="585.1574212893554"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qFF-Xi-fSL">
@@ -245,6 +243,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="EOk-ZB-bLD"/>
+        <segue reference="glU-fU-4Cs"/>
     </inferredMetricsTieBreakers>
 </document>

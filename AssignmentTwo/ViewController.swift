@@ -84,19 +84,33 @@ extension ViewController {
         }
     }
     
+//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+//
+//        print("hello!")
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "BuildingArtworksController") as! BuildingArtworksController
+//
+//        if let buildingArtworks = view.annotation?.title {
+//            print("Sending:")
+//            print((artworksCDDict?[buildingArtworks!])!)
+//            vc.artworks = (artworksCDDict?[buildingArtworks!])!
+//            vc.buildingArtworks = buildingArtworks!
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
+//    }
+    
+    //segues to detailed view controller when annotation is pressed
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        print("hello!")
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "BuildingArtworksController") as! BuildingArtworksController
+        //search for title whithin the file
+        let piece = view.annotation?.title
         
-        if let buildingArtworks = view.annotation?.title {
-            print("Sending:")
-            print((artworksCDDict?[buildingArtworks!])!)
-            vc.artworks = (artworksCDDict?[buildingArtworks!])!
-            vc.buildingArtworks = buildingArtworks!
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        print("he")
+        
+        
+        //print(piece)
+        
+        performSegue(withIdentifier: "showBuildingArtworks", sender: nil)
     }
 }
 
@@ -171,21 +185,21 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     // Passes the selected section and row to the second screen
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        let arrayIndexRow = table.indexPathForSelectedRow?.row
-        let arrayIndexSection = table.indexPathForSelectedRow?.section
-        let selectedCell = artworksCDDict[artworkLocationNotesCD[arrayIndexSection!]]![arrayIndexRow!]
-        
+    
         if let secondClass = segue.destination as? DetailViewController {
+            let arrayIndexRow = table.indexPathForSelectedRow?.row
+            let arrayIndexSection = table.indexPathForSelectedRow?.section
+            let selectedCell = artworksCDDict[artworkLocationNotesCD[arrayIndexSection!]]![arrayIndexRow!]
             secondClass.desArtworkDetail = selectedCell
             secondClass.cache = cache // Sending the cache image
         }
             
         else if let buildingArtworks = segue.destination as? BuildingArtworksController {
-            
+            print("HELLLO!")
+            buildingArtworks.artworks = artworksCD
         }
         
-        table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
+//        table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
     }
 }
 
