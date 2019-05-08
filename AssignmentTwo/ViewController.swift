@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     
     var searching = false // Check if user is searching or not
     var locationManager = CLLocationManager()
-    let cache = NSCache<NSString, NSData>()
+    let cache = NSCache<NSString, NSData>() // Stores the cache image as a dict, the filename and image cache data
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var table: UITableView!
