@@ -18,10 +18,10 @@
 		C57CCAAA225A584900CC4B8B /* JsonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CCAA9225A584900CC4B8B /* JsonStruct.swift */; };
 		C59A3024227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59A3022227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift */; };
 		C59A3025227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59A3023227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift */; };
-		C5A7EA912281818900D928EC /* countryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A7EA8F2281818900D928EC /* countryCell.swift */; };
-		C5A7EA922281818900D928EC /* countryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A7EA902281818900D928EC /* countryCell.xib */; };
-		C5A7EA95228181E300D928EC /* CountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A7EA93228181E300D928EC /* CountryViewController.swift */; };
-		C5A7EA96228181E300D928EC /* CountryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A7EA94228181E300D928EC /* CountryViewController.xib */; };
+		C5A7EA912281818900D928EC /* ArtworkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A7EA8F2281818900D928EC /* ArtworkCell.swift */; };
+		C5A7EA922281818900D928EC /* ArtworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A7EA902281818900D928EC /* ArtworkCell.xib */; };
+		C5A7EA95228181E300D928EC /* BuildingArtworksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A7EA93228181E300D928EC /* BuildingArtworksVC.swift */; };
+		C5A7EA96228181E300D928EC /* BuildingArtworksVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A7EA94228181E300D928EC /* BuildingArtworksVC.xib */; };
 		C5E860122261208500E9C804 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E860112261208500E9C804 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,10 +39,10 @@
 		C57CCAA9225A584900CC4B8B /* JsonStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonStruct.swift; sourceTree = "<group>"; };
 		C59A3022227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ArtworkCore+CoreDataClass.swift"; path = "../ArtworkCore+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C59A3023227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ArtworkCore+CoreDataProperties.swift"; path = "../ArtworkCore+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C5A7EA8F2281818900D928EC /* countryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = countryCell.swift; sourceTree = "<group>"; };
-		C5A7EA902281818900D928EC /* countryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = countryCell.xib; sourceTree = "<group>"; };
-		C5A7EA93228181E300D928EC /* CountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryViewController.swift; sourceTree = "<group>"; };
-		C5A7EA94228181E300D928EC /* CountryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountryViewController.xib; sourceTree = "<group>"; };
+		C5A7EA8F2281818900D928EC /* ArtworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCell.swift; sourceTree = "<group>"; };
+		C5A7EA902281818900D928EC /* ArtworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArtworkCell.xib; sourceTree = "<group>"; };
+		C5A7EA93228181E300D928EC /* BuildingArtworksVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingArtworksVC.swift; sourceTree = "<group>"; };
+		C5A7EA94228181E300D928EC /* BuildingArtworksVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuildingArtworksVC.xib; sourceTree = "<group>"; };
 		C5E860112261208500E9C804 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = ../DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,10 +85,10 @@
 				C57CCA96225A556100CC4B8B /* ViewController.swift */,
 				C57CCAA9225A584900CC4B8B /* JsonStruct.swift */,
 				C57CCA98225A556100CC4B8B /* Main.storyboard */,
-				C5A7EA93228181E300D928EC /* CountryViewController.swift */,
-				C5A7EA94228181E300D928EC /* CountryViewController.xib */,
-				C5A7EA8F2281818900D928EC /* countryCell.swift */,
-				C5A7EA902281818900D928EC /* countryCell.xib */,
+				C5A7EA93228181E300D928EC /* BuildingArtworksVC.swift */,
+				C5A7EA94228181E300D928EC /* BuildingArtworksVC.xib */,
+				C5A7EA8F2281818900D928EC /* ArtworkCell.swift */,
+				C5A7EA902281818900D928EC /* ArtworkCell.xib */,
 				C57CCA9E225A556400CC4B8B /* Assets.xcassets */,
 				C57CCAA0225A556400CC4B8B /* LaunchScreen.storyboard */,
 				C57CCAA3225A556400CC4B8B /* Info.plist */,
@@ -159,9 +159,9 @@
 				C57CCAA2225A556400CC4B8B /* LaunchScreen.storyboard in Resources */,
 				C57CCA9F225A556400CC4B8B /* Assets.xcassets in Resources */,
 				C56E1E3B225BF1CD0014B50C /* AshtonBuilding.gpx in Resources */,
-				C5A7EA922281818900D928EC /* countryCell.xib in Resources */,
+				C5A7EA922281818900D928EC /* ArtworkCell.xib in Resources */,
 				C57CCA9A225A556100CC4B8B /* Main.storyboard in Resources */,
-				C5A7EA96228181E300D928EC /* CountryViewController.xib in Resources */,
+				C5A7EA96228181E300D928EC /* BuildingArtworksVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,8 +174,8 @@
 			files = (
 				C59A3024227A2690007CCAE5 /* ArtworkCore+CoreDataClass.swift in Sources */,
 				C59A3025227A2690007CCAE5 /* ArtworkCore+CoreDataProperties.swift in Sources */,
-				C5A7EA95228181E300D928EC /* CountryViewController.swift in Sources */,
-				C5A7EA912281818900D928EC /* countryCell.swift in Sources */,
+				C5A7EA95228181E300D928EC /* BuildingArtworksVC.swift in Sources */,
+				C5A7EA912281818900D928EC /* ArtworkCell.swift in Sources */,
 				C57CCA97225A556100CC4B8B /* ViewController.swift in Sources */,
 				C5061C012276F34800CFB93F /* PersistenceService.swift in Sources */,
 				C57CCA95225A556100CC4B8B /* AppDelegate.swift in Sources */,

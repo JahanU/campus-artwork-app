@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     var searching = false // Check if user is searching or not
     var locationManager = CLLocationManager()
     let cache = NSCache<NSString, NSData>()
-
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var mapView: MKMapView!
@@ -37,9 +37,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//      PersistenceService.clearCoreData()
+        //      PersistenceService.clearCoreData()
         decodeJson() // Decode the JSON
-        setLocation()
+        setLocation() // Set the location of the user
     }
 }
 
@@ -59,8 +59,8 @@ extension ViewController: MKMapViewDelegate, CLLocationManagerDelegate {
         let locationOfUser = locations[0]
         let lat = locationOfUser.coordinate.latitude
         let long = locationOfUser.coordinate.longitude
-        let latDelta: CLLocationDegrees = 0.004
-        let lonDelta: CLLocationDegrees = 0.004
+        let latDelta: CLLocationDegrees = 0.003 // Distance from the map
+        let lonDelta: CLLocationDegrees = 0.003
         let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: lonDelta)
         let location = CLLocationCoordinate2D(latitude: lat, longitude: long)
         let region = MKCoordinateRegion(center: location, span: span)
@@ -82,10 +82,10 @@ extension ViewController: MKMapViewDelegate, CLLocationManagerDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         // If annotation is selected then push new view controller with selected artworks within a building
         if let buildingArtworks = view.annotation?.title {
-            let vc = CountryViewController()
-
-            vc.artworks = (artworksCDDict?[buildingArtworks!])!
-            vc.cache = cache
+            let vc = BuildingArtworksVC()
+            
+            vc.artworks = (artworksCDDict?[buildingArtworks!])! // Send to second view controller
+            vc.cache = cache // Send cache (for the images)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -97,7 +97,7 @@ extension ViewController: MKMapViewDelegate, CLLocationManagerDelegate {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        
+        // If searching then update section titles with search results sections
         if (searching && searchArtworkSection.count != 0) {
             for x in 0..<searchArtworkTitle.count {
                 for y in 0..<artworksCD.count {
@@ -108,14 +108,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         }
+        // else return all sections
         return artworkLocationNotesCD[section]
     }
     
-    // returns the range of years,  so from from 2001 - 2018 (Returns 18 sections)
+    // returns the range of Location notes. If searching then return the updated filtered sections
     func numberOfSections(in tableView: UITableView) -> Int {
         return (searching) ? searchArtworkTitle.count : artworkLocationNotesCD.count
     }
-    
+    // If searching then return updated filtered search results, else return all sections
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (searching) ? searchArtworkTitle.count : artworksCDDict[artworkLocationNotesCD[section]]?.count ?? 0
     }
@@ -123,11 +124,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "jsonCells", for: indexPath)
         
-        var titleCount = 0
+        var titleCount = 0 // Stores how many results found from the first search input
         // If searching then store the amount of searches found at first
         if (searching && searchArtworkTitle.count > 1) {
             titleCount = searchArtworkTitle.count
-
+            
             for x in 0..<searchArtworkTitle.count {
                 for y in 0..<artworksCD.count {
                     
@@ -151,7 +152,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         else  {
-            
             let artwork = artworksCDDict[artworkLocationNotesCD[indexPath.section]]![indexPath.row]
             cell.textLabel?.text = artwork.title
             cell.detailTextLabel?.text = artwork.artist
@@ -163,7 +163,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     // Passes the selected section and row to the second screen
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
+        
         if let secondClass = segue.destination as? DetailViewController {
             let arrayIndexRow = table.indexPathForSelectedRow?.row
             let arrayIndexSection = table.indexPathForSelectedRow?.section
@@ -171,7 +171,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             secondClass.cache = cache // Sending the cache image
             
             table.deselectRow(at: table.indexPathForSelectedRow!, animated: true) // Little animation touches
-
+            
         }
     }
 }
@@ -202,11 +202,11 @@ extension ViewController {
                         
                         // Check if the JSON has new files or if it is already stored in core data:
                         if (PersistenceService.checkCoreData(aReportTitle: self.allArtworks[i].title!)){
-                            //                            print("Already in core data: dont need to save again")
+                            print("Already in core data: dont need to save again")
                         }
                             
                         else {
-                            //                            print("Adding new artwork")
+                            print("Adding new artwork")
                             let artworkCore = ArtworkCore(context: PersistenceService.context)
                             artworkCore.title = self.allArtworks[i].title!
                             artworkCore.artist = self.allArtworks[i].artist!
@@ -214,17 +214,15 @@ extension ViewController {
                             artworkCore.yearOfWork = self.allArtworks[i].yearOfWork!
                             artworkCore.locationNotes = self.allArtworks[i].locationNotes!
                             artworkCore.fileName = self.allArtworks[i].fileName!
-                            
                             artworkCore.lat = Double(self.allArtworks[i].lat)!
                             artworkCore.long = Double(self.allArtworks[i].long)!
                             
                             PersistenceService.saveContext()
                         }
                     }
-                    
                     self.loadTableView() // after storing the new artworks (if any) we store them into core data and load the tableView
-                    
                     self.cacheAllImages(fileNames: fileNames) // Cache all the images via the artwork file name
+
                 }
                     
                 catch let jsonErr {
@@ -235,7 +233,6 @@ extension ViewController {
             
         }
     }
-    
     
     func loadTableView() {
         print("Loading tableview from Core data")
@@ -281,7 +278,7 @@ extension ViewController {
         // caching 3 images at a time, makes download less intensive and can load images faster
         let queue = OperationQueue.main
         queue.maxConcurrentOperationCount = 3
-      
+        
         for i in 0..<artworksCD.count {
             queue.addOperation { // Cache 3 images at a time
                 self.download(fileName: self.artworksCD[i].fileName!)
@@ -301,10 +298,10 @@ extension ViewController {
         request.cachePolicy = .returnCacheDataElseLoad
         
         let task = session.dataTask(with: request) { [weak self] data, response, error in
-        //print("\(Date()) \(fileName)")
+            //print("\(Date()) \(fileName)")
             
-        // Cache the image with the associated file name
-        self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
+            // Cache the image with the associated file name
+            self?.cache.setObject(data! as NSData, forKey: fileName as NSString)
         }
         
         task.resume()
@@ -315,7 +312,7 @@ extension ViewController {
 extension ViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        if (searchBar.text?.isEmpty == true) { // If not searching then reset everything
+        if ((searchBar.text?.isEmpty)!) { // If not searching then reset everything
             searching = false
             searchArtworkTitle.removeAll()
             searchArtworkSection.removeAll()

@@ -1,5 +1,5 @@
 //
-//  CountryViewController.swift
+//  BuildingArtworksVC
 //  AssignmentTwo
 //
 //  Created by Jahan on 07/05/2019.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class CountryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BuildingArtworksVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tblView: UITableView!
     
-    var artworks = [ArtworkCore]()
+    var artworks = [ArtworkCore]() // Stores all the artworks from inital view controller (Which are within a building)
     var cache: NSCache<NSString, NSData>?
 
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ class CountryViewController: UIViewController, UITableViewDataSource, UITableVie
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let dvc = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
         
-        dvc.desArtworkDetail =  artworks[(tblView.indexPathForSelectedRow?.row)!]
+        dvc.desArtworkDetail =  artworks[(tblView.indexPathForSelectedRow?.row)!] // Pass selected cell to next VC
         dvc.cache = cache // Sending the cache image
 
         // MARK: - Navigation

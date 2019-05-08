@@ -1,5 +1,5 @@
 //
-//  countryCell.swift
+//  ArtworkCell.swift
 //  AssignmentTwo
 //
 //  Created by Jahan on 07/05/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class countryCell: UITableViewCell {
+class ArtworkCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
