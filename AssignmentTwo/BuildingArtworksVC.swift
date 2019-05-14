@@ -22,7 +22,7 @@ class BuildingArtworksVC: UIViewController, UITableViewDataSource, UITableViewDe
         self.tblView.dataSource = self
         self.tblView.delegate = self
         
-        let nib = UINib(nibName: "countryCell", bundle: nil)
+        let nib = UINib(nibName: "ArtworkCell", bundle: nil)
         tblView.register(nib, forCellReuseIdentifier: "cells")
     }
     
