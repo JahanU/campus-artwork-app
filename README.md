@@ -1,4 +1,6 @@
 # assignment-two-swift
+> Final Grade: 95%
+
 *I do not have access to the assignment breif that I did for this assignment, which was "Artworks on Campus".
 However, this years assignment (attached below) follows a similar basis.*
 
